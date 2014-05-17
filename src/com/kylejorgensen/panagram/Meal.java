@@ -1,4 +1,4 @@
-package com.parse.anypic;
+package com.kylejorgensen.panagram;
 
 import com.parse.ParseClassName;
 import com.parse.ParseFile;

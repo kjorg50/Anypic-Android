@@ -1,14 +1,18 @@
-package com.parse.anypic;
+package com.kylejorgensen.panagram;
 
 import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-public class MealSpottingApplication extends Application {
 
+public class AnypicApplication extends Application {
+
+	static final String TAG = "Panagram";
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -17,13 +21,16 @@ public class MealSpottingApplication extends Application {
 		 * In this tutorial, we'll subclass ParseObject for convenience to
 		 * create and modify Meal objects
 		 */
-		ParseObject.registerSubclass(Meal.class);
+		//ParseObject.registerSubclass(Meal.class);
 
 		/*
 		 * Fill in this section with your Parse credentials
 		 */
-		Parse.initialize(this, "CMo3Qz8x2vZ04AwoGSvQlrV0TlcCQUDqm57axM38", "xL5micbX4eVQ5alT6HxLrVTtS7oFSSRKohVJPFxz");
+		Parse.initialize(this, "cLXA3EhzyvWXitzfo8VNlqFEetDG9vKQgt87P85F", "O5EtsbdS59icxwKXqYm3WfLyYKUjHVX4pj5UOazj");
 
+		// Set the Facebook App Id in strings.xml
+		ParseFacebookUtils.initialize(getString(R.string.app_id));
+		
 		/*
 		 * This app lets an anonymous user create and save photos of meals
 		 * they've eaten. An anonymous user is a user that can be created
@@ -37,7 +44,7 @@ public class MealSpottingApplication extends Application {
 		 * Learn more about the ParseUser class:
 		 * https://www.parse.com/docs/android_guide#users
 		 */
-		ParseUser.enableAutomaticUser();
+		//ParseUser.enableAutomaticUser();
 
 		/*
 		 * For more information on app security and Parse ACL:

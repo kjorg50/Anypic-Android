@@ -1,4 +1,4 @@
-package com.parse.anypic;
+package com.kylejorgensen.panagram;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.parse.anypic;
+package com.kylejorgensen.panagram;
 
 import android.app.Activity;
 import android.app.Fragment;
