@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -24,7 +25,10 @@ public class MealSpottingApplication extends Application {
 		/*
 		 * Fill in this section with your Parse credentials
 		 */
-		Parse.initialize(this, "CMo3Qz8x2vZ04AwoGSvQlrV0TlcCQUDqm57axM38", "xL5micbX4eVQ5alT6HxLrVTtS7oFSSRKohVJPFxz");
+		Parse.initialize(this, "cLXA3EhzyvWXitzfo8VNlqFEetDG9vKQgt87P85F", "O5EtsbdS59icxwKXqYm3WfLyYKUjHVX4pj5UOazj");
+		
+		// Set your Facebook App Id in strings.xml
+		ParseFacebookUtils.initialize(getString(R.string.app_id));
 
 		/*
 		 * This app lets an anonymous user create and save photos of meals
