@@ -9,6 +9,8 @@ import com.parse.ParseUser;
 
 public class MealSpottingApplication extends Application {
 
+	static final String TAG = "Panagram";
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();

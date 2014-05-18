@@ -2,8 +2,10 @@ package com.parse.anypic;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +16,8 @@ import android.os.Build;
 
 public class LoginActivity extends Activity {
 
-	private Button loginButton;	
+	private Button loginButton;
+	private Dialog processDialog;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,7 @@ public class LoginActivity extends Activity {
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Log.i(MealSpottingApplication.TAG, "Login button clicked");
 				//onLoginButtonClicked();
 			}
 		});
