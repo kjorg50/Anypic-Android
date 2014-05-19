@@ -14,13 +14,7 @@ public class MealSpottingApplication extends Application {
 	
 	@Override
 	public void onCreate() {
-		super.onCreate();
-
-		/*
-		 * In this tutorial, we'll subclass ParseObject for convenience to
-		 * create and modify Meal objects
-		 */
-		ParseObject.registerSubclass(Meal.class);
+		super.onCreate();		
 
 		/*
 		 * Fill in this section with your Parse credentials
@@ -30,6 +24,12 @@ public class MealSpottingApplication extends Application {
 		// Set your Facebook App Id in strings.xml
 		ParseFacebookUtils.initialize(getString(R.string.app_id));
 
+		/*
+		 * In this tutorial, we'll subclass ParseObject for convenience to
+		 * create and modify Meal objects
+		 */
+		ParseObject.registerSubclass(Meal.class);
+		
 		/*
 		 * This app lets an anonymous user create and save photos of meals
 		 * they've eaten. An anonymous user is a user that can be created

@@ -19,7 +19,8 @@
         android:allowBackup="true"
         android:icon="@drawable/anypic_icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme" 
+        android:name=".MealSpottingApplication">
         <activity
             android:name="com.parse.anypic.MealListActivity"
             android:label="@string/title_activity_meal_list" >
