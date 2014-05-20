@@ -81,7 +81,7 @@ public class NewMealFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				Meal meal = ((NewMealActivity) getActivity()).getCurrentMeal();
+				Meal meal = ((NewPicActivity) getActivity()).getCurrentMeal();
 
 				// When the user clicks "Save," upload the meal to Parse
 				// Add data to the meal object:
@@ -160,7 +160,7 @@ public class NewMealFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		ParseFile photoFile = ((NewMealActivity) getActivity())
+		ParseFile photoFile = ((NewPicActivity) getActivity())
 				.getCurrentMeal().getPhotoFile();
 		if (photoFile != null) {
 			mealPreview.setParseFile(photoFile);

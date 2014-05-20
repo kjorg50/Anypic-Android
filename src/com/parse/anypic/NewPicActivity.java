@@ -14,7 +14,7 @@ import com.parse.ParseFile;
  * data entry and capturing a photo of a given meal.
  * The Activity manages the overall meal data.
  */
-public class NewMealActivity extends Activity {
+public class NewPicActivity extends Activity {
 
 	private Meal meal;
 

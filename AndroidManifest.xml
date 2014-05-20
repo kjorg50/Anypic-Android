@@ -30,8 +30,8 @@
             <!-- android:value="android.app.Activity" /> -->
         </activity>
         <activity
-            android:name="com.parse.anypic.NewMealActivity"
-            android:label="@string/title_activity_new_meal" >
+            android:name="com.parse.anypic.NewPicActivity"
+            android:label="@string/title_activity_new_pic" >
         </activity>
         <activity
             android:name="com.parse.anypic.LoginActivity"

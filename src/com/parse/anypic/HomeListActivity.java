@@ -73,7 +73,7 @@ public class HomeListActivity extends ListActivity {
 	}
 
 	private void newMeal() {
-		Intent i = new Intent(this, NewMealActivity.class);
+		Intent i = new Intent(this, NewPicActivity.class);
 		startActivityForResult(i, 0);
 	}
 
