@@ -32,7 +32,7 @@ public class NewPicActivity extends Activity {
 		Fragment fragment = manager.findFragmentById(R.id.fragmentContainer);
 
 		if (fragment == null) {
-			fragment = new NewMealFragment();
+			fragment = new NewPicFragment();
 			manager.beginTransaction().add(R.id.fragmentContainer, fragment)
 					.commit();
 		}

@@ -34,7 +34,7 @@ import com.parse.SaveCallback;
  * preview at the bottom, which is a standalone
  * ParseImageView.
  */
-public class NewMealFragment extends Fragment {
+public class NewPicFragment extends Fragment {
 
 	private ImageButton photoButton;
 	private Button saveButton;
