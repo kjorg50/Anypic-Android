@@ -39,7 +39,7 @@ public class LoginActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Log.i(MealSpottingApplication.TAG, "Login button clicked");
-				//onLoginButtonClicked();
+				onLoginButtonClicked();
 			}
 		});
 		
