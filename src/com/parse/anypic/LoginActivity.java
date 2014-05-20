@@ -47,8 +47,8 @@ public class LoginActivity extends Activity {
 		// and they are linked to a Facebook account.
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
-			// Go to the user info activity
-			//showHomeListActivity();
+			// Go to the main photo list view activity
+			showHomeListActivity();
 		}
 	}
 	
@@ -66,11 +66,11 @@ public class LoginActivity extends Activity {
 				} else if (user.isNew()) {
 					Log.i(MealSpottingApplication.TAG,
 							"User signed up and logged in through Facebook!");
-					//showHomeListActivity();
+					showHomeListActivity();
 				} else {
 					Log.i(MealSpottingApplication.TAG,
 							"User logged in through Facebook!");
-					//showHomeListActivity();
+					showHomeListActivity();
 				}
 			}
 		});
@@ -83,6 +83,12 @@ public class LoginActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	  super.onActivityResult(requestCode, resultCode, data);
 	  ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+	}
+	
+	private void showHomeListActivity() {
+		Log.i(MealSpottingApplication.TAG, "entered showHomeListActivity");
+		Intent intent = new Intent(this, MealListActivity.class);
+		startActivity(intent);
 	}
 	
 	/***************************************************************************/
