@@ -22,8 +22,8 @@
         android:theme="@style/AppTheme" 
         android:name=".AnypicApplication">
         <activity
-            android:name="com.parse.anypic.MealListActivity"
-            android:label="@string/title_activity_meal_list" >
+            android:name="com.parse.anypic.HomeListActivity"
+            android:label="@string/title_activity_home_list" >
 
             <!-- <meta-data -->
             <!-- android:name="android.support.PARENT_ACTIVITY" -->

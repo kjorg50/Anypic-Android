@@ -9,7 +9,7 @@ import android.view.MenuItem;
 
 import com.parse.ParseQueryAdapter;
 
-public class MealListActivity extends ListActivity {
+public class HomeListActivity extends ListActivity {
 
 	private ParseQueryAdapter<Meal> mainAdapter;
 	private FavoriteMealAdapter favoritesAdapter;
