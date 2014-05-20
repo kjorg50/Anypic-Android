@@ -32,7 +32,7 @@ public class HomeListActivity extends ListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_meal_list, menu);
+		getMenuInflater().inflate(R.menu.activity_home_list, menu);
 		return true;
 	}
 
