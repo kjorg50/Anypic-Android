@@ -1,13 +1,23 @@
 package com.parse.anypic;
 
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.FacebookRequestError;
+import com.facebook.Request;
+import com.facebook.Response;
+import com.facebook.Session;
+import com.facebook.model.GraphUser;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseQueryAdapter;
+import com.parse.ParseUser;
+
 
 public class HomeListActivity extends ListActivity {
 
@@ -26,8 +36,33 @@ public class HomeListActivity extends ListActivity {
 		// Subclass of ParseQueryAdapter
 		favoritesAdapter = new FavoriteMealAdapter(this);
 
-		// Default view is all meals
+		// Default view is all posts
 		setListAdapter(mainAdapter);
+		
+		// Fetch Facebook user info if the session is active
+		Session session = ParseFacebookUtils.getSession();
+		if (session != null && session.isOpened()) {
+			makeMeRequest();
+		}
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+
+		Log.i(AnypicApplication.TAG, "Entered HomeListActivity onResume()");
+		
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser != null) {
+			// Check if the user is currently logged
+			// and show any cached content
+			
+			// TODO: refresh the home list view here
+		} else {
+			// If the user is not logged in, go to the
+			// activity showing the login view.
+			startLoginActivity();
+		}
 	}
 
 	@Override
@@ -37,7 +72,7 @@ public class HomeListActivity extends ListActivity {
 	}
 
 	/*
-	 * Posting meals and refreshing the list will be controlled from the Action
+	 * Posting pictures and refreshing the list will be controlled from the Action
 	 * Bar.
 	 */
 	@Override
@@ -45,7 +80,7 @@ public class HomeListActivity extends ListActivity {
 		switch (item.getItemId()) {
 
 		case R.id.action_refresh: {
-			updateMealList();
+			updateHomeList();
 			break;
 		}
 
@@ -55,14 +90,14 @@ public class HomeListActivity extends ListActivity {
 		}
 
 		case R.id.action_new: {
-			newMeal();
+			newPicture();
 			break;
 		}
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void updateMealList() {
+	private void updateHomeList() {
 		mainAdapter.loadObjects();
 		setListAdapter(mainAdapter);
 	}
@@ -72,7 +107,7 @@ public class HomeListActivity extends ListActivity {
 		setListAdapter(favoritesAdapter);
 	}
 
-	private void newMeal() {
+	private void newPicture() {
 		Intent i = new Intent(this, NewPicActivity.class);
 		startActivityForResult(i, 0);
 	}
@@ -82,8 +117,60 @@ public class HomeListActivity extends ListActivity {
 		if (resultCode == Activity.RESULT_OK) {
 			// If a new post has been added, update
 			// the list of posts
-			updateMealList();
+			updateHomeList();
 		}
+	}
+	
+	/**
+	 * Requesting and setting user data
+	 */
+	private void makeMeRequest() {
+		Request request = Request.newMeRequest(ParseFacebookUtils.getSession(),
+				new Request.GraphUserCallback() {
+					@Override
+					public void onCompleted(GraphUser user, Response response) {
+						if (user != null) {
+							// get the relevant data using the GraphAPI
+							// and store them as fields in our ParseUser
+							ParseUser currentUser = ParseUser
+									.getCurrentUser();
+							currentUser.put("facebookId", user.getId());
+							currentUser.put("displayName", user.getName());
+							currentUser.saveInBackground();
+
+							// handle errors accessing data from facebook
+						} else if (response.getError() != null) {
+							if ((response.getError().getCategory() == FacebookRequestError.Category.AUTHENTICATION_RETRY)
+									|| (response.getError().getCategory() == FacebookRequestError.Category.AUTHENTICATION_REOPEN_SESSION)) {
+								Log.i(AnypicApplication.TAG,
+										"The facebook session was invalidated.");
+								onLogoutButtonClicked();
+							} else {
+								Log.i(AnypicApplication.TAG,
+										"Some other error: "
+												+ response.getError()
+														.getErrorMessage());
+							}
+						}
+					}
+				});
+		request.executeAsync();
+
+	}
+	
+	private void onLogoutButtonClicked() {
+		// Log the user out
+		ParseUser.logOut();
+
+		// Go to the login view
+		startLoginActivity();
+	}
+	
+	private void startLoginActivity() {
+		Intent intent = new Intent(this, LoginActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		startActivity(intent);
 	}
 
 }
