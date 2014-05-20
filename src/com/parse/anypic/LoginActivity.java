@@ -38,7 +38,7 @@ public class LoginActivity extends Activity {
 		loginButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.i(MealSpottingApplication.TAG, "Login button clicked");
+				Log.i(AnypicApplication.TAG, "Login button clicked");
 				onLoginButtonClicked();
 			}
 		});
@@ -61,14 +61,14 @@ public class LoginActivity extends Activity {
 			public void done(ParseUser user, ParseException err) {
 				LoginActivity.this.progressDialog.dismiss();
 				if (user == null) {
-					Log.i(MealSpottingApplication.TAG,
+					Log.i(AnypicApplication.TAG,
 							"Uh oh. The user cancelled the Facebook login.");
 				} else if (user.isNew()) {
-					Log.i(MealSpottingApplication.TAG,
+					Log.i(AnypicApplication.TAG,
 							"User signed up and logged in through Facebook!");
 					showHomeListActivity();
 				} else {
-					Log.i(MealSpottingApplication.TAG,
+					Log.i(AnypicApplication.TAG,
 							"User logged in through Facebook!");
 					showHomeListActivity();
 				}
@@ -86,7 +86,7 @@ public class LoginActivity extends Activity {
 	}
 	
 	private void showHomeListActivity() {
-		Log.i(MealSpottingApplication.TAG, "entered showHomeListActivity");
+		Log.i(AnypicApplication.TAG, "entered showHomeListActivity");
 		Intent intent = new Intent(this, MealListActivity.class);
 		startActivity(intent);
 	}

@@ -8,7 +8,7 @@ import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-public class MealSpottingApplication extends Application {
+public class AnypicApplication extends Application {
 
 	static final String TAG = "Panagram";
 	
