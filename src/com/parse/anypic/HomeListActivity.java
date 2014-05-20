@@ -11,7 +11,7 @@ import com.parse.ParseQueryAdapter;
 
 public class HomeListActivity extends ListActivity {
 
-	private ParseQueryAdapter<Meal> mainAdapter;
+	private ParseQueryAdapter<Picture> mainAdapter;
 	private FavoriteMealAdapter favoritesAdapter;
 
 	@Override
@@ -19,7 +19,7 @@ public class HomeListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		getListView().setClickable(false);
 
-		mainAdapter = new ParseQueryAdapter<Meal>(this, Meal.class);
+		mainAdapter = new ParseQueryAdapter<Picture>(this, Picture.class);
 		mainAdapter.setTextKey("title");
 		mainAdapter.setImageKey("photo");
 

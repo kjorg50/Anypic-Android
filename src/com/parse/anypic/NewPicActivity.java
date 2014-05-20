@@ -10,23 +10,23 @@ import android.view.WindowManager;
 import com.parse.ParseFile;
 
 /*
- * NewMealActivity contains two fragments that handle
- * data entry and capturing a photo of a given meal.
- * The Activity manages the overall meal data.
+ * NewPicActivity contains two fragments that handle
+ * data entry and capturing a photo of a given picture.
+ * The Activity manages the overall picture data.
  */
 public class NewPicActivity extends Activity {
 
-	private Meal meal;
+	private Picture picture;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		meal = new Meal();
+		picture = new Picture();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 
 		// Begin with main data entry view,
-		// NewMealFragment
+		// NewPicFragment
 		setContentView(R.layout.activity_new_meal);
 		FragmentManager manager = getFragmentManager();
 		Fragment fragment = manager.findFragmentById(R.id.fragmentContainer);
@@ -38,8 +38,8 @@ public class NewPicActivity extends Activity {
 		}
 	}
 
-	public Meal getCurrentMeal() {
-		return meal;
+	public Picture getCurrentMeal() {
+		return picture;
 	}
 
 }

@@ -26,9 +26,9 @@ public class AnypicApplication extends Application {
 
 		/*
 		 * In this tutorial, we'll subclass ParseObject for convenience to
-		 * create and modify Meal objects
+		 * create and modify Picture objects
 		 */
-		ParseObject.registerSubclass(Meal.class);
+		ParseObject.registerSubclass(Picture.class);
 		
 		/*
 		 * This app lets an anonymous user create and save photos of meals
