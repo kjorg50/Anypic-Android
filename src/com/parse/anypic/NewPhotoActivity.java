@@ -10,11 +10,11 @@ import android.view.WindowManager;
 import com.parse.ParseFile;
 
 /*
- * NewPicActivity contains two fragments that handle
+ * NewPhotoActivity contains two fragments that handle
  * data entry and capturing a photo of a given photo.
  * The Activity manages the overall photo data.
  */
-public class NewPicActivity extends Activity {
+public class NewPhotoActivity extends Activity {
 
 	private Photo photo;
 

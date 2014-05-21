@@ -107,7 +107,7 @@ public class HomeListActivity extends ListActivity {
 	}
 
 	private void newPicture() {
-		Intent i = new Intent(this, NewPicActivity.class);
+		Intent i = new Intent(this, NewPhotoActivity.class);
 		startActivityForResult(i, 0);
 	}
 

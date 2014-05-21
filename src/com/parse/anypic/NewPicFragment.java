@@ -81,7 +81,7 @@ public class NewPicFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				Photo photo = ((NewPicActivity) getActivity()).getCurrentMeal();
+				Photo photo = ((NewPhotoActivity) getActivity()).getCurrentMeal();
 
 				// When the user clicks "Save," upload the picture to Parse
 				// Add data to the picture object:
@@ -135,10 +135,10 @@ public class NewPicFragment extends Fragment {
 	}
 
 	/*
-	 * All data entry about a Photo object is managed from the NewPicActivity.
+	 * All data entry about a Photo object is managed from the NewPhotoActivity.
 	 * When the user wants to add a photo, we'll start up a custom
 	 * CameraFragment that will let them take the photo and save it to the Photo
-	 * object owned by the NewPicActivity. Create a new CameraFragment, swap
+	 * object owned by the NewPhotoActivity. Create a new CameraFragment, swap
 	 * the contents of the fragmentContainer (see activity_new_meal.xml), then
 	 * add the NewPicFragment to the back stack so we can return to it when the
 	 * camera is finished.
@@ -160,7 +160,7 @@ public class NewPicFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		ParseFile photoFile = ((NewPicActivity) getActivity())
+		ParseFile photoFile = ((NewPhotoActivity) getActivity())
 				.getCurrentMeal().getPhotoFile();
 		if (photoFile != null) {
 			picPreview.setParseFile(photoFile);
