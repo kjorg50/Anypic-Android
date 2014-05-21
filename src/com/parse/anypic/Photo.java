@@ -8,13 +8,13 @@ import com.parse.ParseUser;
 /*
  * An extension of ParseObject that makes
  * it more convenient to access information
- * about a given Picture 
+ * about a given Photo 
  */
 
-@ParseClassName("Picture")
-public class Picture extends ParseObject {
+@ParseClassName("Photo")
+public class Photo extends ParseObject {
 
-	public Picture() {
+	public Photo() {
 		// A default constructor is required.
 	}
 

@@ -11,16 +11,16 @@ import com.parse.ParseFile;
 
 /*
  * NewPicActivity contains two fragments that handle
- * data entry and capturing a photo of a given picture.
- * The Activity manages the overall picture data.
+ * data entry and capturing a photo of a given photo.
+ * The Activity manages the overall photo data.
  */
 public class NewPicActivity extends Activity {
 
-	private Picture picture;
+	private Photo photo;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		picture = new Picture();
+		photo = new Photo();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
@@ -38,8 +38,8 @@ public class NewPicActivity extends Activity {
 		}
 	}
 
-	public Picture getCurrentMeal() {
-		return picture;
+	public Photo getCurrentMeal() {
+		return photo;
 	}
 
 }

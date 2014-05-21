@@ -18,9 +18,9 @@ public class AnypicApplication extends Application {
 		
 		/*
 		 * In this tutorial, we'll subclass ParseObject for convenience to
-		 * create and modify Picture objects
+		 * create and modify Photo objects
 		 */
-		ParseObject.registerSubclass(Picture.class);
+		ParseObject.registerSubclass(Photo.class);
 
 		/*
 		 * Fill in this section with your Parse credentials
@@ -29,27 +29,7 @@ public class AnypicApplication extends Application {
 		
 		// Set your Facebook App Id in strings.xml
 		ParseFacebookUtils.initialize(getString(R.string.app_id));
-
-		/*
-		 * In this tutorial, we'll subclass ParseObject for convenience to
-		 * create and modify Picture objects
-		 */
-		ParseObject.registerSubclass(Picture.class);
 		
-		/*
-		 * This app lets an anonymous user create and save photos.
-		 * An anonymous user is a user that can be created
-		 * without a username and password but still has all of the same
-		 * capabilities as any other ParseUser.
-		 * 
-		 * After logging out, an anonymous user is abandoned, and its data is no
-		 * longer accessible. In your own app, you can convert anonymous users
-		 * to regular users so that data persists.
-		 * 
-		 * Learn more about the ParseUser class:
-		 * https://www.parse.com/docs/android_guide#users
-		 */
-		//ParseUser.enableAutomaticUser();
 
 		/*
 		 * For more information on app security and Parse ACL:

@@ -21,14 +21,14 @@ import com.parse.ParseQueryAdapter;
  * star. 
  */
 
-public class FavoriteMealAdapter extends ParseQueryAdapter<Picture> {
+public class FavoriteMealAdapter extends ParseQueryAdapter<Photo> {
 
 	public FavoriteMealAdapter(Context context) {
-		super(context, new ParseQueryAdapter.QueryFactory<Picture>() {
-			public ParseQuery<Picture> create() {
+		super(context, new ParseQueryAdapter.QueryFactory<Photo>() {
+			public ParseQuery<Photo> create() {
 				// Here we can configure a ParseQuery to display
 				// only top-rated meals.
-				ParseQuery query = new ParseQuery("Picture");
+				ParseQuery query = new ParseQuery("Photo");
 				query.whereContainedIn("rating", Arrays.asList("5", "4"));
 				query.orderByDescending("rating");
 				return query;
@@ -37,16 +37,16 @@ public class FavoriteMealAdapter extends ParseQueryAdapter<Picture> {
 	}
 
 	@Override
-	public View getItemView(Picture picture, View v, ViewGroup parent) {
+	public View getItemView(Photo photo, View v, ViewGroup parent) {
 
 		if (v == null) {
 			v = View.inflate(getContext(), R.layout.item_list_favorites, null);
 		}
 
-		super.getItemView(picture, v, parent);
+		super.getItemView(photo, v, parent);
 
 		ParseImageView mealImage = (ParseImageView) v.findViewById(R.id.icon);
-		ParseFile photoFile = picture.getParseFile("photo");
+		ParseFile photoFile = photo.getParseFile("photo");
 		if (photoFile != null) {
 			mealImage.setParseFile(photoFile);
 			mealImage.loadInBackground(new GetDataCallback() {
@@ -58,7 +58,7 @@ public class FavoriteMealAdapter extends ParseQueryAdapter<Picture> {
 		}
 
 		TextView titleTextView = (TextView) v.findViewById(R.id.text1);
-		titleTextView.setText(picture.getTitle());
+		titleTextView.setText(photo.getTitle());
 		TextView ratingTextView = (TextView) v
 				.findViewById(R.id.favorite_meal_rating);
 		//ratingTextView.setText(picture.getRating());

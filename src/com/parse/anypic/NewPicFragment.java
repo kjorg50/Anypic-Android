@@ -27,7 +27,7 @@ import com.parse.SaveCallback;
 
 /*
  * This fragment manages the data entry for a
- * new Picture object. It lets the user input a 
+ * new Photo object. It lets the user input a 
  * picture name, give it a rating, and take a 
  * photo. If there is already a photo associated
  * with this object, it will be displayed in the 
@@ -81,14 +81,14 @@ public class NewPicFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				Picture picture = ((NewPicActivity) getActivity()).getCurrentMeal();
+				Photo photo = ((NewPicActivity) getActivity()).getCurrentMeal();
 
 				// When the user clicks "Save," upload the picture to Parse
 				// Add data to the picture object:
-				picture.setTitle(picName.getText().toString());
+				photo.setTitle(picName.getText().toString());
 
 				// Associate the picture with the current user
-				picture.setUser(ParseUser.getCurrentUser());
+				photo.setUser(ParseUser.getCurrentUser());
 
 				// Add the rating
 				//picture.setRating(picRating.getSelectedItem().toString());
@@ -97,7 +97,7 @@ public class NewPicFragment extends Fragment {
 				// added in the CameraFragment
 
 				// Save the picture and return
-				picture.saveInBackground(new SaveCallback() {
+				photo.saveInBackground(new SaveCallback() {
 
 					@Override
 					public void done(ParseException e) {
@@ -135,9 +135,9 @@ public class NewPicFragment extends Fragment {
 	}
 
 	/*
-	 * All data entry about a Picture object is managed from the NewPicActivity.
+	 * All data entry about a Photo object is managed from the NewPicActivity.
 	 * When the user wants to add a photo, we'll start up a custom
-	 * CameraFragment that will let them take the photo and save it to the Picture
+	 * CameraFragment that will let them take the photo and save it to the Photo
 	 * object owned by the NewPicActivity. Create a new CameraFragment, swap
 	 * the contents of the fragmentContainer (see activity_new_meal.xml), then
 	 * add the NewPicFragment to the back stack so we can return to it when the

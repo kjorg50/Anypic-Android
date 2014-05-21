@@ -21,7 +21,7 @@ import com.parse.ParseUser;
 
 public class HomeListActivity extends ListActivity {
 
-	private ParseQueryAdapter<Picture> mainAdapter;
+	private ParseQueryAdapter<Photo> mainAdapter;
 	private FavoriteMealAdapter favoritesAdapter;
 
 	@Override
@@ -29,7 +29,7 @@ public class HomeListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		getListView().setClickable(false);
 
-		mainAdapter = new ParseQueryAdapter<Picture>(this, Picture.class);
+		mainAdapter = new ParseQueryAdapter<Photo>(this, Photo.class);
 		mainAdapter.setTextKey("title");
 		mainAdapter.setImageKey("photo");
 
@@ -50,7 +50,7 @@ public class HomeListActivity extends ListActivity {
 	public void onResume() {
 		super.onResume();
 
-		Log.i(AnypicApplication.TAG, "Entered HomeListActivity onResume()");
+		//Log.i(AnypicApplication.TAG, "Entered HomeListActivity onResume()");
 		
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if (currentUser != null) {
@@ -121,7 +121,7 @@ public class HomeListActivity extends ListActivity {
 	}
 	
 	/**
-	 * Requesting and setting user data
+	 * Requesting and setting user data. Essentially, this is the User constructor
 	 */
 	private void makeMeRequest() {
 		Request request = Request.newMeRequest(ParseFacebookUtils.getSession(),
@@ -131,6 +131,18 @@ public class HomeListActivity extends ListActivity {
 						if (user != null) {
 							// get the relevant data using the GraphAPI
 							// and store them as fields in our ParseUser
+							
+							/*
+							 * User Model
+							 * 
+							 * displayName : String
+							 * email : string
+							 * profilePictureMedium : File
+							 * profilePictureSmall : File
+							 * facebookId : String
+							 * facebookFriends : Array
+							 * channel : String
+							 */
 							ParseUser currentUser = ParseUser
 									.getCurrentUser();
 							currentUser.put("facebookId", user.getId());
