@@ -88,10 +88,10 @@ public class NewPicFragment extends Fragment {
 				picture.setTitle(picName.getText().toString());
 
 				// Associate the picture with the current user
-				picture.setAuthor(ParseUser.getCurrentUser());
+				picture.setUser(ParseUser.getCurrentUser());
 
 				// Add the rating
-				picture.setRating(picRating.getSelectedItem().toString());
+				//picture.setRating(picRating.getSelectedItem().toString());
 
 				// If the user added a photo, that data will be
 				// added in the CameraFragment

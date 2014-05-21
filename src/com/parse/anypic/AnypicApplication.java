@@ -15,6 +15,12 @@ public class AnypicApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();		
+		
+		/*
+		 * In this tutorial, we'll subclass ParseObject for convenience to
+		 * create and modify Picture objects
+		 */
+		ParseObject.registerSubclass(Picture.class);
 
 		/*
 		 * Fill in this section with your Parse credentials
@@ -31,8 +37,8 @@ public class AnypicApplication extends Application {
 		ParseObject.registerSubclass(Picture.class);
 		
 		/*
-		 * This app lets an anonymous user create and save photos of meals
-		 * they've eaten. An anonymous user is a user that can be created
+		 * This app lets an anonymous user create and save photos.
+		 * An anonymous user is a user that can be created
 		 * without a username and password but still has all of the same
 		 * capabilities as any other ParseUser.
 		 * 
@@ -43,7 +49,7 @@ public class AnypicApplication extends Application {
 		 * Learn more about the ParseUser class:
 		 * https://www.parse.com/docs/android_guide#users
 		 */
-		ParseUser.enableAutomaticUser();
+		//ParseUser.enableAutomaticUser();
 
 		/*
 		 * For more information on app security and Parse ACL:
@@ -57,6 +63,9 @@ public class AnypicApplication extends Application {
 		 */
 		defaultACL.setPublicReadAccess(true);
 
+		/*
+		 * Default ACL is public read access, and user read/write access
+		 */
 		ParseACL.setDefaultACL(defaultACL, true);
 	}
 

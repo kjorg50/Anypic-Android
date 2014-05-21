@@ -26,20 +26,12 @@ public class Picture extends ParseObject {
 		put("title", title);
 	}
 
-	public ParseUser getAuthor() {
+	public ParseUser getUser() {
 		return getParseUser("author");
 	}
 
-	public void setAuthor(ParseUser user) {
+	public void setUser(ParseUser user) {
 		put("author", user);
-	}
-
-	public String getRating() {
-		return getString("rating");
-	}
-
-	public void setRating(String rating) {
-		put("rating", rating);
 	}
 
 	public ParseFile getPhotoFile() {

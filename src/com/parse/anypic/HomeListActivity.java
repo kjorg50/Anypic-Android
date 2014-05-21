@@ -57,7 +57,6 @@ public class HomeListActivity extends ListActivity {
 			// Check if the user is currently logged
 			// and show any cached content
 			
-			// TODO: refresh the home list view here
 		} else {
 			// If the user is not logged in, go to the
 			// activity showing the login view.
