@@ -34,14 +34,14 @@ import com.parse.SaveCallback;
  * preview at the bottom, which is a standalone
  * ParseImageView.
  */
-public class NewPicFragment extends Fragment {
+public class NewPhotoFragment extends Fragment {
 
 	private ImageButton photoButton;
 	private Button saveButton;
 	private Button cancelButton;
-	private TextView picName;
-	private Spinner picRating;
-	private ParseImageView picPreview;
+	private TextView photoName;
+	private Spinner photoRating;
+	private ParseImageView photoPreview;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,16 +53,16 @@ public class NewPicFragment extends Fragment {
 			Bundle SavedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_new_meal, parent, false);
 
-		picName = ((EditText) v.findViewById(R.id.meal_name));
+		photoName = ((EditText) v.findViewById(R.id.meal_name));
 
-		// The picRating spinner lets people assign favorites of pics they've
+		// The photoRating spinner lets people assign favorites of pics they've
 		// taken.
 		// Pictures with 4 or 5 ratings will appear in the Favorites view.
-		picRating = ((Spinner) v.findViewById(R.id.rating_spinner));
+		photoRating = ((Spinner) v.findViewById(R.id.rating_spinner));
 		ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter
 				.createFromResource(getActivity(), R.array.ratings_array,
 						android.R.layout.simple_spinner_dropdown_item);
-		picRating.setAdapter(spinnerAdapter);
+		photoRating.setAdapter(spinnerAdapter);
 
 		photoButton = ((ImageButton) v.findViewById(R.id.photo_button));
 		photoButton.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +71,7 @@ public class NewPicFragment extends Fragment {
 			public void onClick(View v) {
 				InputMethodManager imm = (InputMethodManager) getActivity()
 						.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(picName.getWindowToken(), 0);
+				imm.hideSoftInputFromWindow(photoName.getWindowToken(), 0);
 				startCamera();
 			}
 		});
@@ -81,11 +81,11 @@ public class NewPicFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				Photo photo = ((NewPhotoActivity) getActivity()).getCurrentMeal();
+				Photo photo = ((NewPhotoActivity) getActivity()).getCurrentPhoto();
 
 				// When the user clicks "Save," upload the picture to Parse
 				// Add data to the picture object:
-				photo.setTitle(picName.getText().toString());
+				photo.setTitle(photoName.getText().toString());
 
 				// Associate the picture with the current user
 				photo.setUser(ParseUser.getCurrentUser());
@@ -128,8 +128,8 @@ public class NewPicFragment extends Fragment {
 		});
 
 		// Until the user has taken a photo, hide the preview
-		picPreview = (ParseImageView) v.findViewById(R.id.meal_preview_image);
-		picPreview.setVisibility(View.INVISIBLE);
+		photoPreview = (ParseImageView) v.findViewById(R.id.meal_preview_image);
+		photoPreview.setVisibility(View.INVISIBLE);
 
 		return v;
 	}
@@ -140,7 +140,7 @@ public class NewPicFragment extends Fragment {
 	 * CameraFragment that will let them take the photo and save it to the Photo
 	 * object owned by the NewPhotoActivity. Create a new CameraFragment, swap
 	 * the contents of the fragmentContainer (see activity_new_meal.xml), then
-	 * add the NewPicFragment to the back stack so we can return to it when the
+	 * add the NewPhotoFragment to the back stack so we can return to it when the
 	 * camera is finished.
 	 */
 	public void startCamera() {
@@ -148,7 +148,7 @@ public class NewPicFragment extends Fragment {
 		FragmentTransaction transaction = getActivity().getFragmentManager()
 				.beginTransaction();
 		transaction.replace(R.id.fragmentContainer, cameraFragment);
-		transaction.addToBackStack("NewMealFragment");
+		transaction.addToBackStack("NewPhotoFragment");
 		transaction.commit();
 	}
 
@@ -161,13 +161,13 @@ public class NewPicFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		ParseFile photoFile = ((NewPhotoActivity) getActivity())
-				.getCurrentMeal().getPhotoFile();
+				.getCurrentPhoto().getPhotoFile();
 		if (photoFile != null) {
-			picPreview.setParseFile(photoFile);
-			picPreview.loadInBackground(new GetDataCallback() {
+			photoPreview.setParseFile(photoFile);
+			photoPreview.loadInBackground(new GetDataCallback() {
 				@Override
 				public void done(byte[] data, ParseException e) {
-					picPreview.setVisibility(View.VISIBLE);
+					photoPreview.setVisibility(View.VISIBLE);
 				}
 			});
 		}

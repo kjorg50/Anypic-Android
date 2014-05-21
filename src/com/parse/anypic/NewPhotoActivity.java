@@ -11,7 +11,7 @@ import com.parse.ParseFile;
 
 /*
  * NewPhotoActivity contains two fragments that handle
- * data entry and capturing a photo of a given photo.
+ * data entry and capturing a photo.
  * The Activity manages the overall photo data.
  */
 public class NewPhotoActivity extends Activity {
@@ -26,19 +26,19 @@ public class NewPhotoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		// Begin with main data entry view,
-		// NewPicFragment
+		// NewPhotoFragment
 		setContentView(R.layout.activity_new_meal);
 		FragmentManager manager = getFragmentManager();
 		Fragment fragment = manager.findFragmentById(R.id.fragmentContainer);
 
 		if (fragment == null) {
-			fragment = new NewPicFragment();
+			fragment = new NewPhotoFragment();
 			manager.beginTransaction().add(R.id.fragmentContainer, fragment)
 					.commit();
 		}
 	}
 
-	public Photo getCurrentMeal() {
+	public Photo getCurrentPhoto() {
 		return photo;
 	}
 

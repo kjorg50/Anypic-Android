@@ -4,12 +4,12 @@
     <string name="app_name">Anypic</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_home_list">Anypic</string>
-    <string name="title_activity_new_pic">Add a new pic</string>
+    <string name="title_activity_new_photo">Add a new photo</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_favorite">Favorites</string>
-    <string name="action_new">Add a Meal</string>
-    <string name="menu_title">My Meals</string>
-    <string name="meal_label">Add a Meal</string>
+    <string name="action_new">Add a Photo</string>
+    <string name="menu_title">My Photos</string>
+    <string name="meal_label">Add a Photo</string>
     <string name="save_button_text">Save</string>
     <string name="cancel_button_text">Cancel</string>
 
