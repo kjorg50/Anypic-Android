@@ -25,14 +25,14 @@ public class NewPhotoActivity extends Activity {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		super.onCreate(savedInstanceState);
 
-		// Begin with main data entry view,
-		// NewPhotoFragment
-		setContentView(R.layout.activity_new_meal);
+		// Begin with the CameraFragment
+		setContentView(R.layout.activity_new_photo);
 		FragmentManager manager = getFragmentManager();
 		Fragment fragment = manager.findFragmentById(R.id.fragmentContainer);
 
 		if (fragment == null) {
-			fragment = new NewPhotoFragment();
+			fragment = new CameraFragment();
+			// add( id of the FrameLayout to fill, and the fragment that the layout will hold
 			manager.beginTransaction().add(R.id.fragmentContainer, fragment)
 					.commit();
 		}

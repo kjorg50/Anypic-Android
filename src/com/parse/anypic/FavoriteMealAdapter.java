@@ -58,7 +58,7 @@ public class FavoriteMealAdapter extends ParseQueryAdapter<Photo> {
 		}
 
 		TextView titleTextView = (TextView) v.findViewById(R.id.text1);
-		titleTextView.setText(photo.getTitle());
+		//titleTextView.setText(photo.getTitle());
 		TextView ratingTextView = (TextView) v
 				.findViewById(R.id.favorite_meal_rating);
 		//ratingTextView.setText(picture.getRating());

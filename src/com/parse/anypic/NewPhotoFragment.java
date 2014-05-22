@@ -85,7 +85,7 @@ public class NewPhotoFragment extends Fragment {
 
 				// When the user clicks "Save," upload the picture to Parse
 				// Add data to the picture object:
-				photo.setTitle(photoName.getText().toString());
+				//photo.setTitle(photoName.getText().toString());
 
 				// Associate the picture with the current user
 				photo.setUser(ParseUser.getCurrentUser());
@@ -161,7 +161,7 @@ public class NewPhotoFragment extends Fragment {
 	public void onResume() {
 		super.onResume();
 		ParseFile photoFile = ((NewPhotoActivity) getActivity())
-				.getCurrentPhoto().getPhotoFile();
+				.getCurrentPhoto().getImage();
 		if (photoFile != null) {
 			photoPreview.setParseFile(photoFile);
 			photoPreview.loadInBackground(new GetDataCallback() {

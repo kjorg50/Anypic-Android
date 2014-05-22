@@ -18,28 +18,28 @@ public class Photo extends ParseObject {
 		// A default constructor is required.
 	}
 
-	public String getTitle() {
-		return getString("title");
+	public ParseFile getImage() {
+		return getParseFile("image");
 	}
 
-	public void setTitle(String title) {
-		put("title", title);
+	public void setImage(ParseFile file) {
+		put("image", file);
 	}
 
 	public ParseUser getUser() {
-		return getParseUser("author");
+		return getParseUser("user");
 	}
 
 	public void setUser(ParseUser user) {
-		put("author", user);
+		put("user", user);
 	}
 
-	public ParseFile getPhotoFile() {
-		return getParseFile("photo");
+	public ParseFile getThumbnail() {
+		return getParseFile("thumbnail");
 	}
 
 	public void setPhotoFile(ParseFile file) {
-		put("photo", file);
+		put("thumbnail", file);
 	}
 
 }
