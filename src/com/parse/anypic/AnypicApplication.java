@@ -17,11 +17,16 @@ public class AnypicApplication extends Application {
 		super.onCreate();		
 		
 		/*
-		 * In this tutorial, we'll subclass ParseObject for convenience to
-		 * create and modify Photo objects
+		 * In this tutorial, we'll subclass ParseObjects for convenience to
+		 * create and modify Photo objects.
+		 * 
+		 * Also, we'll use an Activity class to keep track of the relationships
+		 * of ParseUsers with each other and Photos. Every time a user follows, likes 
+		 * or comments, a new activity is created to represent the relationship.
 		 */
 		ParseObject.registerSubclass(Photo.class);
-
+		ParseObject.registerSubclass(Activity.class);
+		
 		/*
 		 * Fill in this section with your Parse credentials
 		 */
