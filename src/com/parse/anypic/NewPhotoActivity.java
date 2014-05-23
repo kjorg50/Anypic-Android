@@ -1,13 +1,20 @@
 package com.parse.anypic;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.commons.io.IOUtils;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,8 +24,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.parse.ParseFile;
-
+import com.parse.SaveCallback;
+	
 /*
  * NewPhotoActivity contains two fragments that handle
  * data entry and capturing a photo.
@@ -30,6 +39,8 @@ public class NewPhotoActivity extends Activity {
 	public static final int MEDIA_TYPE_IMAGE = 1;
 	private Photo photo;
 	private Uri fileUri;
+	private ParseFile image;
+	private ParseFile thumbnail;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -74,6 +85,18 @@ public class NewPhotoActivity extends Activity {
 	            if(fileUri != null){
 	            	Toast.makeText(this, "Image saved to:\n" +
 	            			fileUri.toString(), Toast.LENGTH_LONG).show();
+	            	
+	            	byte[] bytes = null;
+	            	// convert the file to a byte array
+	            	try{
+	            		InputStream fileInputStream= getContentResolver().openInputStream(fileUri);
+	            		bytes = IOUtils.toByteArray(fileInputStream);
+	            	} catch(Exception ex){
+	            		Log.i(AnypicApplication.TAG, "Exception reading image from file: " + ex);
+	            	}
+	            	
+	            	// Convert the image into ParseFiles
+	            	savePhotoFiles(bytes);	            	
 	            } else {
 	            	Toast.makeText(this, "Error: image not saved to device", 
 	            			Toast.LENGTH_LONG).show();
@@ -86,6 +109,47 @@ public class NewPhotoActivity extends Activity {
             			Toast.LENGTH_LONG).show();
 	        }
 	    }
+	}
+	
+	/**
+	 * Takes the photo captured by the user, and saves the image and it's 
+	 * scaled-down thumbnail as ParseFiles. This occurs after the user captures
+	 * a photo, but before the user chooses to publish to Anypic. Thus, these
+	 * ParseFiles can later be associated with the Photo object itself. 
+	 * 
+	 * @param data The byte array containing the image data
+	 */
+	private void savePhotoFiles(byte[] data) {
+
+		// Convert to Bitmap to assist with resizing
+		Bitmap anypicImage = BitmapFactory.decodeByteArray(data, 0, data.length);
+		
+		// Override Android default landscape orientation and save portrait
+		Matrix matrix = new Matrix();
+		matrix.postRotate(90);
+		Bitmap rotatedImage = Bitmap.createBitmap(anypicImage, 0,
+				0, anypicImage.getWidth(), anypicImage.getHeight(),
+				matrix, true);
+		
+		// make thumbnail with width 80
+		Bitmap anypicThumbnail = Bitmap.createScaledBitmap(rotatedImage, 100, 100
+				* rotatedImage.getHeight() / rotatedImage.getWidth(), false);
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		rotatedImage.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+		byte[] rotatedData = bos.toByteArray();
+		
+		bos.reset(); // reset the stream to prepare for the thumbnail
+		anypicThumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+		byte[] thumbnailData = bos.toByteArray();
+
+		// Create the ParseFiles and save them in the background
+		image = new ParseFile("photo.jpg", rotatedData);
+		thumbnail = new ParseFile("photo_thumbnail.jpg", thumbnailData);
+		image.saveInBackground();
+		thumbnail.saveInBackground();
+		
+		Log.i(AnypicApplication.TAG, "Finished saving the photos to ParseFiles!");
 	}
 	
 	/** Create a file Uri for saving an image */
@@ -138,8 +202,17 @@ public class NewPhotoActivity extends Activity {
 	    return mediaFile;
 	}
 	
+	/*** Getters ***/
 	public Uri getPhotoFileUri(){
 		return fileUri;
+	}
+	
+	public ParseFile getImageFile(){
+		return image;
+	}
+	
+	public ParseFile getThumbnailFile(){
+		return thumbnail;
 	}
 	
 	public Photo getCurrentPhoto() {
