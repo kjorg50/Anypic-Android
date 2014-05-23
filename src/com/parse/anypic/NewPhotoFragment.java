@@ -72,7 +72,7 @@ public class NewPhotoFragment extends Fragment {
 				InputMethodManager imm = (InputMethodManager) getActivity()
 						.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(photoName.getWindowToken(), 0);
-				startCamera();
+				//startCamera();
 			}
 		});
 
