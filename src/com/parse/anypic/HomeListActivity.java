@@ -89,7 +89,7 @@ public class HomeListActivity extends ListActivity {
 		}
 
 		case R.id.action_new: {
-			newPicture();
+			newPhoto();
 			break;
 		}
 		}
@@ -106,7 +106,7 @@ public class HomeListActivity extends ListActivity {
 		setListAdapter(favoritesAdapter);
 	}
 
-	private void newPicture() {
+	private void newPhoto() {
 		Intent i = new Intent(this, NewPhotoActivity.class);
 		startActivityForResult(i, 0);
 	}

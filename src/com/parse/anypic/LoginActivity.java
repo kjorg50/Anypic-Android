@@ -86,7 +86,7 @@ public class LoginActivity extends Activity {
 	}
 	
 	private void showHomeListActivity() {
-		Log.i(AnypicApplication.TAG, "entered showHomeListActivity");
+		//Log.i(AnypicApplication.TAG, "entered showHomeListActivity");
 		Intent intent = new Intent(this, HomeListActivity.class);
 		startActivity(intent);
 	}
