@@ -2,6 +2,7 @@ package com.parse.anypic;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -93,6 +94,7 @@ public class NewPhotoActivity extends Activity {
 	            		bytes = IOUtils.toByteArray(fileInputStream);
 	            	} catch(Exception ex){
 	            		Log.i(AnypicApplication.TAG, "Exception reading image from file: " + ex);
+	            		ex.printStackTrace();
 	            	}
 	            	
 	            	// Convert the image into ParseFiles
@@ -143,6 +145,13 @@ public class NewPhotoActivity extends Activity {
 		anypicThumbnail.compress(Bitmap.CompressFormat.JPEG, 100, bos);
 		byte[] thumbnailData = bos.toByteArray();
 
+		try {
+			// close the byte array output stream
+			bos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+		
 		// Create the ParseFiles and save them in the background
 		image = new ParseFile("photo.jpg", rotatedData);
 		thumbnail = new ParseFile("photo_thumbnail.jpg", thumbnailData);

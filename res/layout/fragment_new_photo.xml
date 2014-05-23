@@ -14,13 +14,13 @@
     <com.parse.ParseImageView
         android:id="@+id/photo_preview"
         android:layout_width="wrap_content"
-        android:layout_height="200dp" />
+        android:layout_height="512dp" />
 
-    <ImageButton
-        android:id="@+id/camera_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_photo" />
+<!--     <ImageButton -->
+<!--         android:id="@+id/camera_button" -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="wrap_content" -->
+<!--         android:src="@drawable/ic_action_photo" /> -->
 
     <Button
         android:id="@+id/save_button"
