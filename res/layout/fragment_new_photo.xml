@@ -12,7 +12,7 @@
         android:textSize="20sp" />
 
     <EditText
-        android:id="@+id/meal_name"
+        android:id="@+id/photo_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine" />
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content" />
 
     <ImageButton
-        android:id="@+id/photo_button"
+        android:id="@+id/camera_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_photo" />
@@ -41,7 +41,7 @@
         android:text="@string/cancel_button_text" />
 
     <com.parse.ParseImageView
-        android:id="@+id/meal_preview_image"
+        android:id="@+id/photo_preview"
         android:layout_width="wrap_content"
         android:layout_height="200dp" />
 

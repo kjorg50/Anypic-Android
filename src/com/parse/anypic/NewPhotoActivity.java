@@ -55,7 +55,7 @@ public class NewPhotoActivity extends Activity {
 	}
 
 	/** Create the Intent which opens the Camera */
-	private void startCamera(){
+	public void startCamera(){
 		// create Intent to take a picture and return control to the calling application
 	    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -98,7 +98,13 @@ public class NewPhotoActivity extends Activity {
 	    }
 	}
 	
-	/** Create a File for saving an image */
+	/** 
+	 * Create a File for saving an image. Uses the environment external
+	 * storage directory. Creates each file using unique timestamp. 
+	 * 
+	 * Returns the File object for the new image, or null if there was
+	 * some error creating the file.
+	 */
 	private static File getOutputMediaFile(int type){
 	    // To be safe, you should check that the SDCard is mounted
 	    // using Environment.getExternalStorageState() before doing this.

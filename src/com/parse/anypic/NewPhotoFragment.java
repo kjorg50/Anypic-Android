@@ -51,9 +51,9 @@ public class NewPhotoFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle SavedInstanceState) {
-		View v = inflater.inflate(R.layout.fragment_new_meal, parent, false);
+		View v = inflater.inflate(R.layout.fragment_new_photo, parent, false);
 
-		photoName = ((EditText) v.findViewById(R.id.meal_name));
+		photoName = ((EditText) v.findViewById(R.id.photo_name));
 
 		// The photoRating spinner lets people assign favorites of pics they've
 		// taken.
@@ -64,15 +64,19 @@ public class NewPhotoFragment extends Fragment {
 						android.R.layout.simple_spinner_dropdown_item);
 		photoRating.setAdapter(spinnerAdapter);
 
-		photoButton = ((ImageButton) v.findViewById(R.id.photo_button));
+		photoButton = ((ImageButton) v.findViewById(R.id.camera_button));
 		photoButton.setOnClickListener(new View.OnClickListener() {
-
+			// The photoButton can be used to re-open the camera if the 
+			// user is not satisfied with the current preview. I guess 
+			// this is not the best solution, but I think it will work. 
+			
 			@Override
 			public void onClick(View v) {
 				InputMethodManager imm = (InputMethodManager) getActivity()
 						.getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(photoName.getWindowToken(), 0);
-				//startCamera();
+				// Open the camera using an Intent
+				((NewPhotoActivity) getActivity()).startCamera();
 			}
 		});
 
@@ -122,35 +126,32 @@ public class NewPhotoFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				// Todo (extra) - delete the files of any picturs that were
+				// saved onto the local device, but not Parse
+				
 				getActivity().setResult(Activity.RESULT_CANCELED);
 				getActivity().finish();
 			}
 		});
 
 		// Until the user has taken a photo, hide the preview
-		photoPreview = (ParseImageView) v.findViewById(R.id.meal_preview_image);
+		photoPreview = (ParseImageView) v.findViewById(R.id.photo_preview);
 		photoPreview.setVisibility(View.INVISIBLE);
 
 		return v;
 	}
 
 	/*
-	 * All data entry about a Photo object is managed from the NewPhotoActivity.
-	 * When the user wants to add a photo, we'll start up a custom
-	 * CameraFragment that will let them take the photo and save it to the Photo
-	 * object owned by the NewPhotoActivity. Create a new CameraFragment, swap
-	 * the contents of the fragmentContainer (see activity_new_meal.xml), then
-	 * add the NewPhotoFragment to the back stack so we can return to it when the
-	 * camera is finished.
+	 * Old function to start Camera fragment.... probably don't need anymore
 	 */
-	public void startCamera() {
-		Fragment cameraFragment = new CameraFragment();
-		FragmentTransaction transaction = getActivity().getFragmentManager()
-				.beginTransaction();
-		transaction.replace(R.id.fragmentContainer, cameraFragment);
-		transaction.addToBackStack("NewPhotoFragment");
-		transaction.commit();
-	}
+//	public void startCamera() {
+//		Fragment cameraFragment = new CameraFragment();
+//		FragmentTransaction transaction = getActivity().getFragmentManager()
+//				.beginTransaction();
+//		transaction.replace(R.id.fragmentContainer, cameraFragment);
+//		transaction.addToBackStack("NewPhotoFragment");
+//		transaction.commit();
+//	}
 
 	/*
 	 * On resume, check and see if a photo has been set from the
