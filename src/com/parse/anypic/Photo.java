@@ -38,7 +38,7 @@ public class Photo extends ParseObject {
 		return getParseFile("thumbnail");
 	}
 
-	public void setPhotoFile(ParseFile file) {
+	public void setThumbnail(ParseFile file) {
 		put("thumbnail", file);
 	}
 

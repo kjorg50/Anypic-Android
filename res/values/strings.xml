@@ -9,8 +9,8 @@
     <string name="action_favorite">Favorites</string>
     <string name="action_new">Add a Photo</string>
     <string name="menu_title">My Photos</string>
-    <string name="meal_label">Add a Photo</string>
-    <string name="save_button_text">Save</string>
+    <string name="photo_label">Add a Photo</string>
+    <string name="save_button_text">Publish</string>
     <string name="cancel_button_text">Cancel</string>
 
     <string-array name="ratings_array">

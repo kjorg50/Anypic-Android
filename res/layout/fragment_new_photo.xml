@@ -8,19 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:text="@string/meal_label"
+        android:text="@string/photo_label"
         android:textSize="20sp" />
-
-    <EditText
-        android:id="@+id/photo_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine" />
-
-    <Spinner
-        android:id="@+id/rating_spinner"
+    
+    <com.parse.ParseImageView
+        android:id="@+id/photo_preview"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="200dp" />
 
     <ImageButton
         android:id="@+id/camera_button"
@@ -39,10 +33,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/cancel_button_text" />
-
-    <com.parse.ParseImageView
-        android:id="@+id/photo_preview"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp" />
 
 </LinearLayout>
