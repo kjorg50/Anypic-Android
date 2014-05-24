@@ -5,8 +5,10 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.parse.PushService;
 
 public class AnypicApplication extends Application {
 
@@ -52,6 +54,12 @@ public class AnypicApplication extends Application {
 		 * Default ACL is public read access, and user read/write access
 		 */
 		ParseACL.setDefaultACL(defaultACL, true);
+		
+		/*
+		 *  Register for push notifications.
+		 */
+		PushService.setDefaultPushCallback(this, HomeListActivity.class);
+		ParseInstallation.getCurrentInstallation().saveInBackground();
 	}
 
 }

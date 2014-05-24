@@ -3,6 +3,7 @@ package com.parse.anypic;
 import java.util.Arrays;
 import java.util.List;
 
+import com.parse.ParseAnalytics;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.parse.ParseException;
@@ -50,6 +51,9 @@ public class LoginActivity extends Activity {
 			// Go to the main photo list view activity
 			showHomeListActivity();
 		}
+		
+		// For push notifications
+		ParseAnalytics.trackAppOpened(getIntent());
 	}
 	
 	private void onLoginButtonClicked() {
