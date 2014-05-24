@@ -2,7 +2,6 @@ package com.parse.anypic;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -85,7 +84,7 @@ public class NewPhotoFragment extends Fragment {
 				// Associate the picture with the current user
 				photo.setUser(ParseUser.getCurrentUser());
 
-				// Add the image
+				// Add the image				
 				photo.setImage( ((NewPhotoActivity) getActivity()).getImageFile() );
 
 				// Add the thumbnail
@@ -140,6 +139,7 @@ public class NewPhotoFragment extends Fragment {
 		super.onResume();
 		ParseFile photoFile = ((NewPhotoActivity) getActivity()).getImageFile();
 		if (photoFile != null) {
+			Log.i(AnypicApplication.TAG, "The photo WAS taken");
 			photoPreview.setParseFile(photoFile);
 			photoPreview.loadInBackground(new GetDataCallback() {
 				@Override
@@ -147,6 +147,8 @@ public class NewPhotoFragment extends Fragment {
 					photoPreview.setVisibility(View.VISIBLE);
 				}
 			});
+		} else{
+			photoPreview.setVisibility(View.INVISIBLE);
 		}
 	}
 

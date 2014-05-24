@@ -89,6 +89,7 @@ public class LoginActivity extends Activity {
 		//Log.i(AnypicApplication.TAG, "entered showHomeListActivity");
 		Intent intent = new Intent(this, HomeListActivity.class);
 		startActivity(intent);
+		finish(); // This closes the login screen so it's not on the back stack
 	}
 	
 	/***************************************************************************/

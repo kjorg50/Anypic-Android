@@ -98,13 +98,15 @@ public class NewPhotoActivity extends Activity {
 	            	}
 	            	
 	            	// Convert the image into ParseFiles
-	            	savePhotoFiles(bytes);	            	
+	            	savePhotoFiles(bytes);
 	            } else {
 	            	Toast.makeText(this, "Error: image not saved to device", 
 	            			Toast.LENGTH_LONG).show();
 	            }
 	        } else if (resultCode == RESULT_CANCELED) {
-	            // User cancelled the image capture
+	            // User cancelled the image capture, return to previous activity
+	        	setResult(Activity.RESULT_CANCELED);
+				finish();
 	        } else {
 	            // Image capture failed, advise user
 	        	Toast.makeText(this, "Error: image not saved to device", 
@@ -227,5 +229,5 @@ public class NewPhotoActivity extends Activity {
 	public Photo getCurrentPhoto() {
 		return photo;
 	}
-
+	
 }
