@@ -58,7 +58,7 @@ public class AnypicApplication extends Application {
 		/*
 		 *  Register for push notifications.
 		 */
-		PushService.setDefaultPushCallback(this, HomeListActivity.class);
+		PushService.setDefaultPushCallback(this, LoginActivity.class);
 		ParseInstallation.getCurrentInstallation().saveInBackground();
 	}
 

@@ -1,6 +1,5 @@
 package com.parse.anypic;
 
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -15,6 +14,7 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 
@@ -148,6 +148,11 @@ public class HomeListActivity extends ListActivity {
 							currentUser.put("facebookId", user.getId());
 							currentUser.put("displayName", user.getName());
 							currentUser.saveInBackground();
+							
+							// Associate the device with a user
+							ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+							installation.put("user", currentUser);
+							installation.saveInBackground();
 
 							// handle errors accessing data from facebook
 						} else if (response.getError() != null) {
