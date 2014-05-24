@@ -2,6 +2,7 @@ package com.parse.anypic;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,6 +39,7 @@ public class NewPhotoFragment extends Fragment {
 	private Button saveButton;
 	private Button cancelButton;
 	private ParseImageView photoPreview;
+	private ProgressDialog progressDialog;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,6 +80,9 @@ public class NewPhotoFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				setProgressDialog( ProgressDialog.show(getActivity(), "",
+								"Publishing photo...", true, true) );
+				
 				Photo photo = ((NewPhotoActivity) getActivity()).getCurrentPhoto();
 
 				// When the user clicks "Save," upload the picture to Parse
@@ -95,8 +100,9 @@ public class NewPhotoFragment extends Fragment {
 
 					@Override
 					public void done(ParseException e) {
+						getProgressDialog().dismiss();
 						if (e == null) {
-							Log.i(AnypicApplication.TAG, "Saved new Photo to Parse!!!");
+							Log.i(AnypicApplication.TAG, "Saved new Photo to Parse!");
 							getActivity().setResult(Activity.RESULT_OK);
 							getActivity().finish();
 						} else {
@@ -150,6 +156,14 @@ public class NewPhotoFragment extends Fragment {
 		} else{
 			photoPreview.setVisibility(View.INVISIBLE);
 		}
+	}
+	
+	public ProgressDialog getProgressDialog(){
+		return progressDialog;
+	}
+	
+	public void setProgressDialog(ProgressDialog pd){
+		progressDialog = pd;
 	}
 
 }
