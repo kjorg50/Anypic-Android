@@ -7,7 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.FacebookRequestError;
 import com.facebook.Request;
@@ -30,7 +35,16 @@ public class HomeListActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home_list);
 		ListView lv = getListView();
-		lv.setClickable(false);
+		
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+
+				// Photo clicked == parent.getItemAtPosition(position)
+				Toast.makeText(getApplicationContext(),
+						"Item clicked: " + parent.getItemAtPosition(position).getClass().getName(), Toast.LENGTH_SHORT).show();
+			}
+		});
 
 		Log.i(AnypicApplication.TAG, "1. about to create home view adapter");
 		// Subclass of ParseQueryAdapter
@@ -155,6 +169,8 @@ public class HomeListActivity extends ListActivity {
 							currentUser.put("facebookId", user.getId());
 							currentUser.put("displayName", user.getName());
 							currentUser.saveInBackground();
+							
+							// TODO - auto follow facebook friends
 							
 							// Associate the device with a user
 							ParseInstallation installation = ParseInstallation.getCurrentInstallation();
