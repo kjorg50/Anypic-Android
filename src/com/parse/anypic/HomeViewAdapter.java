@@ -100,6 +100,10 @@ public class HomeViewAdapter extends ParseQueryAdapter<Photo> {
 		// Set up the actual photo
 		ParseImageView anypicPhotoView = (ParseImageView) v.findViewById(R.id.photo);
 		ParseFile photoFile = photo.getImage();
+		
+		// TODO (future) - get image bitmap, then set the image view with setImageBitmap()
+		// we can use the decodeBitmap tricks to reduce the size to save memory
+		
 		if (photoFile != null) {
 			anypicPhotoView.setParseFile(photoFile);
 			anypicPhotoView.loadInBackground(new GetDataCallback() {
@@ -113,15 +117,15 @@ public class HomeViewAdapter extends ParseQueryAdapter<Photo> {
 	        anypicPhotoView.setImageResource(android.R.color.transparent);
 	    }
 		
-		
-		final ImageView iv=anypicPhotoView;
-		ViewTreeObserver vto = iv.getViewTreeObserver();
-		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-			public boolean onPreDraw() {
-				Log.i(AnypicApplication.TAG, "*** Photo height: " + iv.getMeasuredHeight() + " width: " + iv.getMeasuredWidth());
-				return true;
-			}
-		});
+
+//		final ImageView iv=anypicPhotoView;
+//		ViewTreeObserver vto = iv.getViewTreeObserver();
+//		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//			public boolean onPreDraw() {
+//				Log.i(AnypicApplication.TAG, "*** Photo height: " + iv.getMeasuredHeight() + " width: " + iv.getMeasuredWidth());
+//				return true;
+//			}
+//		});
 		return v;
 	}
 

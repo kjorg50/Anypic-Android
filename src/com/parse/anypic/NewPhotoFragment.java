@@ -9,10 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.GetDataCallback;
@@ -35,7 +33,7 @@ import com.parse.SaveCallback;
  */
 public class NewPhotoFragment extends Fragment {
 
-	private ImageButton cameraButton; // not used right now
+	//private ImageButton cameraButton; // not used right now
 	private Button saveButton;
 	private Button cancelButton;
 	private ParseImageView photoPreview;
