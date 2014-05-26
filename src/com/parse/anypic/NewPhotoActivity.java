@@ -25,9 +25,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.SaveCallback;
 	
 /*
  * NewPhotoActivity contains two fragments that handle
@@ -140,7 +138,7 @@ public class NewPhotoActivity extends Activity {
 				0, anypicImage.getWidth(), anypicImage.getHeight(),
 				matrix, true);
 		
-		// make thumbnail with width 80
+		// make thumbnail with width 100
 		Bitmap anypicThumbnail = Bitmap.createScaledBitmap(rotatedImage, 100, 100
 				* rotatedImage.getHeight() / rotatedImage.getWidth(), false);
 

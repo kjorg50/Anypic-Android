@@ -7,7 +7,6 @@ import com.parse.ParseACL;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 import com.parse.PushService;
 
 public class AnypicApplication extends Application {
