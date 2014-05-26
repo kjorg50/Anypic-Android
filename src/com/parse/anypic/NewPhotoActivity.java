@@ -25,7 +25,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.SaveCallback;
 	
 /*
  * NewPhotoActivity contains two fragments that handle
@@ -35,7 +37,10 @@ import com.parse.ParseFile;
 public class NewPhotoActivity extends Activity {
 
 	private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
-	public static final int MEDIA_TYPE_IMAGE = 1;
+	private static final int MEDIA_TYPE_IMAGE = 1;
+	private static final int REQ_WIDTH = 560;
+	private static final int REQ_HEIGHT = 560;
+	
 	private Photo photo;
 	private Uri fileUri;
 	private ParseFile image;
@@ -83,39 +88,38 @@ public class NewPhotoActivity extends Activity {
 	            // Image captured and saved to fileUri specified in the Intent
 	            if(fileUri != null){
 	            	Toast.makeText(this, "Image saved to:\n" +
-	            			fileUri.toString(), Toast.LENGTH_LONG).show();
+	            			fileUri.toString(), Toast.LENGTH_LONG).show();	            	
 	            	
-	            	byte[] bytes = null;
-	            	// convert the file to a byte array
-	            	try{
-	            		InputStream fileInputStream= getContentResolver().openInputStream(fileUri);
-	            		bytes = IOUtils.toByteArray(fileInputStream);
-	            	} catch(Exception ex){
-	            		Log.i(AnypicApplication.TAG, "Exception reading image from file: " + ex);
-	            		ex.printStackTrace();
-	            	}
-	            	
+	            	// TODO (future) - save photo files in background with Async task
 	            	// Convert the image into ParseFiles
-	            	savePhotoFiles(bytes);
+	            	if(fileUri.getPath() != null){
+	            		savePhotoFiles(fileUri.getPath());
+	            	} else { 
+	            		Log.i(AnypicApplication.TAG, "Error finding file path");
+	            		cancelActivity(); 
+	            	}
 	            } else {
+	            	// fileUri was null
 	            	Toast.makeText(this, "Error: image not saved to device", 
 	            			Toast.LENGTH_LONG).show();
 	            	// return to previous activity after failure
-	            	setResult(Activity.RESULT_CANCELED);
-					finish();
+	            	cancelActivity();
 	            }
 	        } else if (resultCode == RESULT_CANCELED) {
 	            // User cancelled the image capture, return to previous activity
-	        	setResult(Activity.RESULT_CANCELED);
-				finish();
+	        	cancelActivity();
 	        } else {
 	            // Image capture failed, advise user
 	        	Toast.makeText(this, "Error: image not saved to device", 
             			Toast.LENGTH_LONG).show();
-	        	setResult(Activity.RESULT_CANCELED);
-				finish();
+	        	cancelActivity();
 	        }
 	    }
+	}
+	
+	public void cancelActivity(){
+		setResult(Activity.RESULT_CANCELED);
+		finish();
 	}
 	
 	/**
@@ -126,10 +130,11 @@ public class NewPhotoActivity extends Activity {
 	 * 
 	 * @param data The byte array containing the image data
 	 */
-	private void savePhotoFiles(byte[] data) {
+	private void savePhotoFiles(String pathToFile) {
 
 		// Convert to Bitmap to assist with resizing
-		Bitmap anypicImage = BitmapFactory.decodeByteArray(data, 0, data.length);
+		Bitmap anypicImage = decodeSampledBitmapFromFile(pathToFile, REQ_WIDTH, REQ_HEIGHT);
+		//Bitmap anypicImage = BitmapFactory.decodeByteArray(data, 0, data.length);
 		
 		// Override Android default landscape orientation and save portrait
 		Matrix matrix = new Matrix();
@@ -138,9 +143,8 @@ public class NewPhotoActivity extends Activity {
 				0, anypicImage.getWidth(), anypicImage.getHeight(),
 				matrix, true);
 		
-		// make thumbnail with width 100
-		Bitmap anypicThumbnail = Bitmap.createScaledBitmap(rotatedImage, 100, 100
-				* rotatedImage.getHeight() / rotatedImage.getWidth(), false);
+		// make thumbnail with size of 86 pixels
+		Bitmap anypicThumbnail = Bitmap.createScaledBitmap(rotatedImage, 86, 86, false);
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		rotatedImage.compress(Bitmap.CompressFormat.JPEG, 100, bos);
@@ -160,8 +164,30 @@ public class NewPhotoActivity extends Activity {
 		// Create the ParseFiles and save them in the background
 		image = new ParseFile("photo.jpg", rotatedData);
 		thumbnail = new ParseFile("photo_thumbnail.jpg", thumbnailData);
-		image.saveInBackground();
-		thumbnail.saveInBackground();
+		image.saveInBackground( new SaveCallback() {
+			@Override
+			public void done(ParseException e) {
+				if (e != null) {
+					Toast.makeText(getApplicationContext(),
+							"Error saving image file: " + e.getMessage(),
+							Toast.LENGTH_LONG).show();
+				} else {
+					// saved image to Parse
+				}
+			}
+		});
+		thumbnail.saveInBackground(new SaveCallback() {
+			@Override
+			public void done(ParseException e) {
+				if (e != null) {
+					Toast.makeText(getApplicationContext(),
+							"Error saving thumbnail file: " + e.getMessage(),
+							Toast.LENGTH_LONG).show();
+				} else {
+					// saved image to Parse
+				}				
+			}
+		});
 		
 		Log.i(AnypicApplication.TAG, "Finished saving the photos to ParseFiles!");
 	}
@@ -216,6 +242,69 @@ public class NewPhotoActivity extends Activity {
 	    return mediaFile;
 	}
 	
+	/**
+	 * This function takes the path to our file from which we want to create
+	 * a Bitmap, and decodes it using a smaller sample size in an effort to 
+	 * avoid an OutOfMemoryError.
+	 * 
+	 * See: http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
+	 * 
+	 * @param path The path to the file resource 
+	 * @param reqWidth The required width that the image should be prepared for
+	 * @param reqHeight The required height that the image should be prepared for
+	 * @return A Bitmap resource that has been scaled down to an appropriate size, so that it can conserve memory
+	 * 
+	 */
+	public static Bitmap decodeSampledBitmapFromFile(String path,
+									int reqWidth, int reqHeight) {
+
+	    // First decode with inJustDecodeBounds=true to check dimensions
+	    final BitmapFactory.Options options = new BitmapFactory.Options();
+	    options.inJustDecodeBounds = true;
+	    BitmapFactory.decodeFile(path, options);
+
+	    // Calculate inSampleSize
+	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+	    // Decode bitmap with inSampleSize set
+	    options.inJustDecodeBounds = false;
+	    return BitmapFactory.decodeFile(path, options);
+	}
+	
+	/**
+	 * This is a helper function used to calculate the appropriate sampleSize 
+	 * for use in the decodeSampledBitmapFromFile() function.
+	 * 
+	 * See: http://developer.android.com/training/displaying-bitmaps/load-bitmap.html
+	 * 
+	 * @param options The BitmapOptions for the Bitmap resource that we want to scale down
+	 * @param reqWidth The target width of the UI element in which we want to fit the Bitmap
+	 * @param reqHeight The target height of the UI element in which we want to fit the Bitmap
+	 * @return A sample size value that is a power of two based on a target width and height
+	 */
+	public static int calculateInSampleSize(
+			BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > reqHeight
+					&& (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
+			}
+		}
+
+		return inSampleSize;
+	}
+
 	/*** Getters ***/
 	public Uri getPhotoFileUri(){
 		return fileUri;
