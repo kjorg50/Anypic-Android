@@ -1,7 +1,5 @@
 package com.parse.anypic;
 
-import java.util.Arrays;
-
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -25,8 +23,7 @@ import com.parse.ParseUser;
 
 public class HomeListActivity extends ListActivity {
 
-	private ParseQueryAdapter<Photo> mainAdapter;
-	private FavoriteMealAdapter favoritesAdapter;
+	private HomeViewAdapter mHomeViewAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,43 +32,16 @@ public class HomeListActivity extends ListActivity {
 		ListView lv = getListView();
 		lv.setClickable(false);
 
-		mainAdapter = new ParseQueryAdapter<Photo>(this, new ParseQueryAdapter.QueryFactory<Photo>() {
-			@Override
-			public ParseQuery<Photo> create() {
-				// First, query for the friends whom the current user follows
-				ParseQuery<com.parse.anypic.Activity> followingActivitiesQuery = new ParseQuery<com.parse.anypic.Activity>("Activity");
-				followingActivitiesQuery.whereMatches("type", "follow");
-				followingActivitiesQuery.whereEqualTo("fromUser", ParseUser.getCurrentUser());
-				
-				// Get the photos from the Users returned in the previous query
-				ParseQuery<Photo> photosFromFollowedUsersQuery = new ParseQuery<Photo>("Photo");
-				photosFromFollowedUsersQuery.whereMatchesKeyInQuery("user", "toUser", followingActivitiesQuery);
-				photosFromFollowedUsersQuery.whereExists("thumbnail");
-				
-				// Get the current user's photos
-				ParseQuery<Photo> photosFromCurrentUserQuery = new ParseQuery<Photo>("Photo");
-				photosFromCurrentUserQuery.whereEqualTo("user", ParseUser.getCurrentUser());
-				photosFromCurrentUserQuery.whereExists("thumbnail");
-				
-				// We create a final compound query that will find all of the photos that were
-			    // taken by the user's friends or by the user
-				ParseQuery<Photo> query = ParseQuery.or(Arrays.asList( photosFromFollowedUsersQuery, photosFromCurrentUserQuery ));
-				query.include("user");
-				query.orderByDescending("createdAt");
-				
-				return query;
-			}
-		});		
-		
-		
-		//mainAdapter.setTextKey("user");
-		mainAdapter.setImageKey("thumbnail");
-
+		Log.i(AnypicApplication.TAG, "1. about to create home view adapter");
 		// Subclass of ParseQueryAdapter
-		favoritesAdapter = new FavoriteMealAdapter(this);
+		mHomeViewAdapter = new HomeViewAdapter(this);
+		Log.i(AnypicApplication.TAG, "2. finished creating home view adapter");
 
-		// Default view is all posts
-		setListAdapter(mainAdapter);
+		Log.i(AnypicApplication.TAG, "3. about to set the list adapter view");
+		// Default view
+		setListAdapter(mHomeViewAdapter);
+		
+		Log.i(AnypicApplication.TAG, "6. done setting list adapter");
 		
 		// Fetch Facebook user info if the session is active
 		Session session = ParseFacebookUtils.getSession();
@@ -131,13 +101,15 @@ public class HomeListActivity extends ListActivity {
 	}
 
 	private void updateHomeList() {
-		mainAdapter.loadObjects();
-		setListAdapter(mainAdapter);
+		Log.i(AnypicApplication.TAG, "*** begin loadObjects() in updateHomeList");
+		mHomeViewAdapter.loadObjects();
+		Log.i(AnypicApplication.TAG, "*** finish loadObjects() in updateHomeList");
+		setListAdapter(mHomeViewAdapter);
 	}
 
 	private void showFavorites() {
-		favoritesAdapter.loadObjects();
-		setListAdapter(favoritesAdapter);
+		//mHomeViewAdapter.loadObjects();
+		//setListAdapter(mHomeViewAdapter);
 	}
 
 	private void newPhoto() {
@@ -176,6 +148,7 @@ public class HomeListActivity extends ListActivity {
 							 * facebookId : String
 							 * facebookFriends : Array
 							 * channel : String
+							 * userAlreadyAutoFollowedFacebookFriends : boolean
 							 */
 							ParseUser currentUser = ParseUser
 									.getCurrentUser();
