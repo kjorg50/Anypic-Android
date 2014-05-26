@@ -6,6 +6,8 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.GetDataCallback;
@@ -97,7 +99,7 @@ public class HomeViewAdapter extends ParseQueryAdapter<Photo> {
 		
 		// Set up the actual photo
 		ParseImageView anypicPhotoView = (ParseImageView) v.findViewById(R.id.photo);
-		ParseFile photoFile = photo.getThumbnail();
+		ParseFile photoFile = photo.getImage();
 		if (photoFile != null) {
 			anypicPhotoView.setParseFile(photoFile);
 			anypicPhotoView.loadInBackground(new GetDataCallback() {
@@ -111,6 +113,15 @@ public class HomeViewAdapter extends ParseQueryAdapter<Photo> {
 	        anypicPhotoView.setImageResource(android.R.color.transparent);
 	    }
 		
+		
+		final ImageView iv=anypicPhotoView;
+		ViewTreeObserver vto = iv.getViewTreeObserver();
+		vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+			public boolean onPreDraw() {
+				Log.i(AnypicApplication.TAG, "*** Photo height: " + iv.getMeasuredHeight() + " width: " + iv.getMeasuredWidth());
+				return true;
+			}
+		});
 		return v;
 	}
 
