@@ -1,5 +1,7 @@
 package com.parse.anypic;
 
+import java.util.Arrays;
+
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.facebook.FacebookRequestError;
 import com.facebook.Request;
@@ -15,6 +18,7 @@ import com.facebook.Session;
 import com.facebook.model.GraphUser;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
+import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
 import com.parse.ParseUser;
 
@@ -27,11 +31,41 @@ public class HomeListActivity extends ListActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getListView().setClickable(false);
+		setContentView(R.layout.activity_home_list);
+		ListView lv = getListView();
+		lv.setClickable(false);
 
-		mainAdapter = new ParseQueryAdapter<Photo>(this, Photo.class);
-		mainAdapter.setTextKey("title");
-		mainAdapter.setImageKey("photo");
+		mainAdapter = new ParseQueryAdapter<Photo>(this, new ParseQueryAdapter.QueryFactory<Photo>() {
+			@Override
+			public ParseQuery<Photo> create() {
+				// First, query for the friends whom the current user follows
+				ParseQuery<com.parse.anypic.Activity> followingActivitiesQuery = new ParseQuery<com.parse.anypic.Activity>("Activity");
+				followingActivitiesQuery.whereMatches("type", "follow");
+				followingActivitiesQuery.whereEqualTo("fromUser", ParseUser.getCurrentUser());
+				
+				// Get the photos from the Users returned in the previous query
+				ParseQuery<Photo> photosFromFollowedUsersQuery = new ParseQuery<Photo>("Photo");
+				photosFromFollowedUsersQuery.whereMatchesKeyInQuery("user", "toUser", followingActivitiesQuery);
+				photosFromFollowedUsersQuery.whereExists("thumbnail");
+				
+				// Get the current user's photos
+				ParseQuery<Photo> photosFromCurrentUserQuery = new ParseQuery<Photo>("Photo");
+				photosFromCurrentUserQuery.whereEqualTo("user", ParseUser.getCurrentUser());
+				photosFromCurrentUserQuery.whereExists("thumbnail");
+				
+				// We create a final compound query that will find all of the photos that were
+			    // taken by the user's friends or by the user
+				ParseQuery<Photo> query = ParseQuery.or(Arrays.asList( photosFromFollowedUsersQuery, photosFromCurrentUserQuery ));
+				query.include("user");
+				query.orderByDescending("createdAt");
+				
+				return query;
+			}
+		});		
+		
+		
+		//mainAdapter.setTextKey("user");
+		mainAdapter.setImageKey("thumbnail");
 
 		// Subclass of ParseQueryAdapter
 		favoritesAdapter = new FavoriteMealAdapter(this);
