@@ -1,25 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_title"
-        android:orderInCategory="99"
-        android:showAsAction="never"
-        android:title="@string/menu_title"/>
-    <item
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_action_refresh"
         android:showAsAction="ifRoom"
         android:title="@string/action_refresh">
     </item>
     <item
-        android:id="@+id/action_favorites"
-        android:icon="@drawable/ic_action_favorite"
+        android:id="@+id/action_person"
+        android:icon="@drawable/ic_action_person"
         android:showAsAction="ifRoom"
-        android:title="@string/action_favorite">
+        android:title="@string/action_person">
     </item>
     <item
         android:id="@+id/action_new"
-        android:icon="@drawable/ic_action_new"
+        android:icon="@drawable/ic_action_camera"
         android:showAsAction="ifRoom"
         android:title="@string/action_new">
     </item>
