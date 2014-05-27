@@ -84,7 +84,7 @@ public class HomeListActivity extends ListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.activity_home_list, menu);
+		getMenuInflater().inflate(R.menu.activity_home_menu, menu);
 		return true;
 	}
 
@@ -108,6 +108,11 @@ public class HomeListActivity extends ListActivity {
 
 		case R.id.action_new: {
 			newPhoto();
+			break;
+		}
+		
+		case R.id.logout: {
+			onLogoutButtonClicked();
 			break;
 		}
 		}
@@ -166,7 +171,6 @@ public class HomeListActivity extends ListActivity {
 									.getCurrentUser();
 							currentUser.put("facebookId", user.getId());
 							currentUser.put("displayName", user.getName());
-							currentUser.put("userAlreadyAutoFollowedFacebookFriends", false);
 							currentUser.saveInBackground();
 							
 							// Make another facebook request to auto follow all of
@@ -275,9 +279,10 @@ public class HomeListActivity extends ListActivity {
 	}
 	
 	private void onLogoutButtonClicked() {
+		// close this user's session
+		ParseFacebookUtils.getSession().closeAndClearTokenInformation();
 		// Log the user out
 		ParseUser.logOut();
-
 		// Go to the login view
 		startLoginActivity();
 	}
@@ -287,6 +292,7 @@ public class HomeListActivity extends ListActivity {
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivity(intent);
+		finish();
 	}
 
 }
