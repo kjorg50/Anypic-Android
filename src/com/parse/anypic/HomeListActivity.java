@@ -34,6 +34,7 @@ import com.parse.ParseUser;
 public class HomeListActivity extends ListActivity {
 
 	private HomeViewAdapter mHomeViewAdapter;
+	private UserViewAdapter mUserViewAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class HomeListActivity extends ListActivity {
 
 		// Subclass of ParseQueryAdapter
 		mHomeViewAdapter = new HomeViewAdapter(this);
+		mUserViewAdapter = new UserViewAdapter(this);
 
 		// Default view
 		setListAdapter(mHomeViewAdapter);
@@ -101,8 +103,8 @@ public class HomeListActivity extends ListActivity {
 			break;
 		}
 
-		case R.id.action_favorites: {
-			showFavorites();
+		case R.id.action_person: {
+			showUser();
 			break;
 		}
 
@@ -124,9 +126,9 @@ public class HomeListActivity extends ListActivity {
 		setListAdapter(mHomeViewAdapter);
 	}
 
-	private void showFavorites() {
-		//mHomeViewAdapter.loadObjects();
-		//setListAdapter(mHomeViewAdapter);
+	private void showUser() {
+		mUserViewAdapter.loadObjects();
+		setListAdapter(mUserViewAdapter);
 	}
 
 	private void newPhoto() {
