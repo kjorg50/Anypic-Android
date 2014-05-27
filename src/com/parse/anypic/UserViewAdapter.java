@@ -1,10 +1,8 @@
 package com.parse.anypic;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.GetDataCallback;
