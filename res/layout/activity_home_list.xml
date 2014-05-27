@@ -8,7 +8,7 @@
 
      <ListView android:id="@android:id/list"
                android:layout_width="match_parent"
-               android:layout_height="match_parent"
+               android:layout_height="0dip"
                android:background="#FFFFFF"
                android:layout_weight="1"
                android:drawSelectorOnTop="false"/>
@@ -17,6 +17,6 @@
                android:layout_width="match_parent"
                android:layout_height="match_parent"
                android:background="#FFFFFF"
-               android:text="No data"/>
+               android:text="@string/no_data"/>
      
  </LinearLayout>

@@ -13,20 +13,13 @@
     <string name="save_button_text">Publish</string>
     <string name="cancel_button_text">Cancel</string>
 
-    <string-array name="ratings_array">
-        <item>5</item>
-        <item>4</item>
-        <item>3</item>
-        <item>2</item>
-        <item>1</item>
-        <item></item>
-    </string-array>
-
     <string name="title_activity_login">Anypic</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="login_intro">Login to Anypic using your Facebook account</string>
     <string name="login">Log in</string>
+    <string name="logout">Log out</string>
     <string name="app_id">1415285015407362</string>
+    <string name="no_data">No data</string>
 
 </resources>
