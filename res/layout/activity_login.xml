@@ -3,16 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"  >
-    
+
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:gravity="center_horizontal"
         android:text="@string/login_intro"
         android:textSize="18sp" />
-    
-
     
     <Button
         android:id="@+id/loginButton"

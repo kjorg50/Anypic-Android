@@ -87,8 +87,8 @@ public class NewPhotoActivity extends Activity {
 	        if (resultCode == RESULT_OK) {
 	            // Image captured and saved to fileUri specified in the Intent
 	            if(fileUri != null){
-	            	Toast.makeText(this, "Image saved to:\n" +
-	            			fileUri.toString(), Toast.LENGTH_LONG).show();	            	
+//	            	Toast.makeText(this, "Image saved to:\n" +
+//	            			fileUri.toString(), Toast.LENGTH_LONG).show();	            	
 	            	
 	            	// TODO (future) - save photo files in background with Async task
 	            	// Convert the image into ParseFiles
