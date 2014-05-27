@@ -29,7 +29,6 @@ public class HomeViewAdapter extends ParseQueryAdapter<Photo> {
 	public HomeViewAdapter(Context context) {
 		super(context, new ParseQueryAdapter.QueryFactory<Photo>() {
 			public ParseQuery<Photo> create() {
-				Log.i(AnypicApplication.TAG, "4. Home adapter starting queries!");
 				
 				// First, query for the friends whom the current user follows
 				ParseQuery<com.parse.anypic.Activity> followingActivitiesQuery = new ParseQuery<com.parse.anypic.Activity>("Activity");
@@ -52,7 +51,6 @@ public class HomeViewAdapter extends ParseQueryAdapter<Photo> {
 				query.include("user");
 				query.orderByDescending("createdAt");
 				
-				Log.i(AnypicApplication.TAG, "5. Home adapter finished queries");
 				return query;
 			}
 		});
@@ -86,7 +84,7 @@ public class HomeViewAdapter extends ParseQueryAdapter<Photo> {
 				@Override
 				public void done(byte[] data, ParseException e) {
 					// nothing to do
-					Log.i(AnypicApplication.TAG, "7. Thumbnail view loaded");
+					//Log.i(AnypicApplication.TAG, "7. Thumbnail view loaded");
 				}
 			});
 		} else { // Clear ParseImageView if an object doesn't have a photo
@@ -110,7 +108,7 @@ public class HomeViewAdapter extends ParseQueryAdapter<Photo> {
 				@Override
 				public void done(byte[] data, ParseException e) {
 					// nothing to do
-					Log.i(AnypicApplication.TAG, "8. Image view loaded");
+					//Log.i(AnypicApplication.TAG, "8. Image view loaded");
 				}
 			});
 		} else { // Clear ParseImageView if an object doesn't have a photo
