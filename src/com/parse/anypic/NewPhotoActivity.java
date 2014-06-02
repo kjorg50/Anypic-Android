@@ -3,22 +3,31 @@ package com.parse.anypic;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import org.apache.commons.io.IOUtils;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ComponentName;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Window;
@@ -54,7 +63,7 @@ public class NewPhotoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_photo);
 		
-		// Open the camera using an Intent
+		// Open the camera or gallery using an Intent
 		startCamera();
 		
 		// After taking a picture, open the NewPhotoFragment
@@ -69,37 +78,100 @@ public class NewPhotoActivity extends Activity {
 		}
 	}
 
-	/** Create the Intent which opens the Camera */
+	/** Create the Intent which opens the Camera or some image gallery */
 	public void startCamera(){
-		// create Intent to take a picture and return control to the calling application
-	    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-	    fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
-	    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+		fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+		
+		// Camera intents
+	    final List<Intent> cameraIntents = new ArrayList<Intent>();
+	    final Intent captureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	    final PackageManager packageManager = getPackageManager();
+	    final List<ResolveInfo> listCam = packageManager.queryIntentActivities(captureIntent, 0);
+	    for(ResolveInfo res : listCam) {
+	        final String packageName = res.activityInfo.packageName;
+	        final Intent intent = new Intent(captureIntent);
+	        intent.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
+	        intent.setPackage(packageName);
+	        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+	        cameraIntents.add(intent);
+	    }
+	    
+	    // Filesystem intents (to upload from Gallery, Dropbox, etc.)
+	    final Intent galleryIntent = new Intent();
+	    galleryIntent.setType("image/*");
+	    galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
+		
+	    // Chooser of filesystem options.
+	    final Intent chooserIntent = Intent.createChooser(galleryIntent, "Select Source");
+	    
+	    // Add the camera options.
+	    chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents.toArray(new Parcelable[]{}));
 
 	    // start the image capture Intent
-	    startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+	    startActivityForResult(chooserIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 	        if (resultCode == RESULT_OK) {
+	        	final boolean isCamera;
+	        	
+	        	// first try and determine if the picture was taken by the camera
+	        	if(data == null){
+	        		Log.i(AnypicApplication.TAG, "intent data was null");
+	        		isCamera = true;
+	        	}
+	        	else {
+	        		final String action = data.getAction();
+	                if(action == null)
+	                {
+	                	Log.i(AnypicApplication.TAG, "Intent data.getAction() was null");
+	                    isCamera = false;
+	                }
+	                else
+	                {
+	                    isCamera = action.equals(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+	                    Log.i(AnypicApplication.TAG, "Intent data.getAction was equal to camera capture? " + isCamera);
+	                }
+	        	}
+	        	
+	        	// Now, determine the file URI of where the image is, either from
+	        	// the camera, or another file URI on the device storage
+	        	Uri selectedImageUri;
+	            if(isCamera)
+	            {
+	                selectedImageUri = fileUri;
+	            }
+	            else // the image did not come from the camera
+	            {
+	            	// if data is null, then selectImageUri = null, else selectImageUri = data.getData()
+	                selectedImageUri = data == null ? null : data.getData();
+	                
+	                Log.i(AnypicApplication.TAG, "selectedImageUri is "+ selectedImageUri);
+	                if(selectedImageUri != null){
+	                	// we need to decode the file from its URI
+	                	String realPath = getPathFromUri(getApplicationContext(), selectedImageUri);
+	                	Log.i(AnypicApplication.TAG, "selectedImageUri *real path* is "+ realPath);
+	                	savePhotoFiles(realPath);
+	                	return;
+	                }
+	            }
+	        	
 	            // Image captured and saved to fileUri specified in the Intent
-	            if(fileUri != null){
+	            if(selectedImageUri != null){
 //	            	Toast.makeText(this, "Image saved to:\n" +
-//	            			fileUri.toString(), Toast.LENGTH_LONG).show();	            	
+//	            			selectedImageUri.toString(), Toast.LENGTH_LONG).show();	            	
 	            	
-	            	// TODO (future) - save photo files in background with Async task
 	            	// Convert the image into ParseFiles
-	            	if(fileUri.getPath() != null){
-	            		savePhotoFiles(fileUri.getPath());
+	            	if(selectedImageUri.getPath() != null){
+	            		savePhotoFiles(selectedImageUri.getPath());
 	            	} else { 
 	            		Log.i(AnypicApplication.TAG, "Error finding file path");
 	            		cancelActivity(); 
 	            	}
 	            } else {
-	            	// fileUri was null
+	            	// selectedImageUri was null
 	            	Toast.makeText(this, "Error: image not saved to device", 
 	            			Toast.LENGTH_LONG).show();
 	            	// return to previous activity after failure
@@ -122,6 +194,145 @@ public class NewPhotoActivity extends Activity {
 		finish();
 	}
 	
+	/* ***************************************************************** 
+	 * Section taken from http://stackoverflow.com/a/20559175/1092403
+	 * *****************************************************************
+	 */
+	
+	/**
+	 * Get a file path from a Uri. This will get the the path for Storage Access
+	 * Framework Documents, as well as the _data field for the MediaStore and
+	 * other file-based ContentProviders.
+	 *
+	 * @param context The context.
+	 * @param uri The Uri to query.
+	 * @author paulburke
+	 */
+	@SuppressLint("NewApi")
+	public static String getPathFromUri(final Context context, final Uri uri) {
+
+	    final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
+	    // DocumentProvider
+	    if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+	        // ExternalStorageProvider
+	        if (isExternalStorageDocument(uri)) {
+	            final String docId = DocumentsContract.getDocumentId(uri);
+	            final String[] split = docId.split(":");
+	            final String type = split[0];
+
+	            if ("primary".equalsIgnoreCase(type)) {
+	                return Environment.getExternalStorageDirectory() + "/" + split[1];
+	            }
+
+	            // TODO handle non-primary volumes
+	        }
+	        // DownloadsProvider
+	        else if (isDownloadsDocument(uri)) {
+
+	            final String id = DocumentsContract.getDocumentId(uri);
+	            final Uri contentUri = ContentUris.withAppendedId(
+	                    Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+	            return getDataColumn(context, contentUri, null, null);
+	        }
+	        // MediaProvider
+	        else if (isMediaDocument(uri)) {
+	            final String docId = DocumentsContract.getDocumentId(uri);
+	            final String[] split = docId.split(":");
+	            final String type = split[0];
+
+	            Uri contentUri = null;
+	            if ("image".equals(type)) {
+	                contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+	            } else if ("video".equals(type)) {
+	                contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+	            } else if ("audio".equals(type)) {
+	                contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+	            }
+
+	            final String selection = "_id=?";
+	            final String[] selectionArgs = new String[] {
+	                    split[1]
+	            };
+
+	            return getDataColumn(context, contentUri, selection, selectionArgs);
+	        }
+	    }
+	    // MediaStore (and general)
+	    else if ("content".equalsIgnoreCase(uri.getScheme())) {
+	        return getDataColumn(context, uri, null, null);
+	    }
+	    // File
+	    else if ("file".equalsIgnoreCase(uri.getScheme())) {
+	        return uri.getPath();
+	    }
+
+	    return null;
+	}
+
+	/**
+	 * Get the value of the data column for this Uri. This is useful for
+	 * MediaStore Uris, and other file-based ContentProviders.
+	 *
+	 * @param context The context.
+	 * @param uri The Uri to query.
+	 * @param selection (Optional) Filter used in the query.
+	 * @param selectionArgs (Optional) Selection arguments used in the query.
+	 * @return The value of the _data column, which is typically a file path.
+	 */
+	public static String getDataColumn(Context context, Uri uri, String selection,
+	        String[] selectionArgs) {
+
+	    Cursor cursor = null;
+	    final String column = "_data";
+	    final String[] projection = {
+	            column
+	    };
+
+	    try {
+	        cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+	                null);
+	        if (cursor != null && cursor.moveToFirst()) {
+	            final int column_index = cursor.getColumnIndexOrThrow(column);
+	            return cursor.getString(column_index);
+	        }
+	    } finally {
+	        if (cursor != null)
+	            cursor.close();
+	    }
+	    return null;
+	}
+
+	/**
+	 * @param uri The Uri to check.
+	 * @return Whether the Uri authority is ExternalStorageProvider.
+	 */
+	public static boolean isExternalStorageDocument(Uri uri) {
+	    return "com.android.externalstorage.documents".equals(uri.getAuthority());
+	}
+
+	/**
+	 * @param uri The Uri to check.
+	 * @return Whether the Uri authority is DownloadsProvider.
+	 */
+	public static boolean isDownloadsDocument(Uri uri) {
+	    return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+	}
+
+	/**
+	 * @param uri The Uri to check.
+	 * @return Whether the Uri authority is MediaProvider.
+	 */
+	public static boolean isMediaDocument(Uri uri) {
+	    return "com.android.providers.media.documents".equals(uri.getAuthority());
+	}
+	
+	/* *************************************************************************** 
+	 * 									END SECTION
+	 * ***************************************************************************
+	 */
+	
 	/**
 	 * Takes the photo captured by the user, and saves the image and it's 
 	 * scaled-down thumbnail as ParseFiles. This occurs after the user captures
@@ -129,6 +340,7 @@ public class NewPhotoActivity extends Activity {
 	 * ParseFiles can later be associated with the Photo object itself. 
 	 * 
 	 * @param data The byte array containing the image data
+	 * TODO (future) - do this in background AsyncTask
 	 */
 	private void savePhotoFiles(String pathToFile) {
 

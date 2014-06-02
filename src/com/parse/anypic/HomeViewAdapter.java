@@ -38,12 +38,12 @@ public class HomeViewAdapter extends ParseQueryAdapter<Photo> {
 				// Get the photos from the Users returned in the previous query
 				ParseQuery<Photo> photosFromFollowedUsersQuery = new ParseQuery<Photo>("Photo");
 				photosFromFollowedUsersQuery.whereMatchesKeyInQuery("user", "toUser", followingActivitiesQuery);
-				photosFromFollowedUsersQuery.whereExists("thumbnail");
+				photosFromFollowedUsersQuery.whereExists("image");
 				
 				// Get the current user's photos
 				ParseQuery<Photo> photosFromCurrentUserQuery = new ParseQuery<Photo>("Photo");
 				photosFromCurrentUserQuery.whereEqualTo("user", ParseUser.getCurrentUser());
-				photosFromCurrentUserQuery.whereExists("thumbnail");
+				photosFromCurrentUserQuery.whereExists("image");
 				
 				// We create a final compound query that will find all of the photos that were
 			    // taken by the user's friends or by the user

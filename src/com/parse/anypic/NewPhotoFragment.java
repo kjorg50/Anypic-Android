@@ -51,28 +51,6 @@ public class NewPhotoFragment extends Fragment {
 
 		photoPreview = (ParseImageView) v.findViewById(R.id.photo_preview);
 
-		// Taking this out for now, since it causes a java.lang.OutOfMemoryError
-		// when on the preview page and you open the Camera Intent again and save
-		// a new picture. I believe it's because of the Bitmap operations in the 
-		// savePhotoFiles() function. Fix this by finding a way to run that Bitmap
-		// scaling and copying in the background, rather than the main thread.
-		
-//		cameraButton = ((ImageButton) v.findViewById(R.id.camera_button));
-//		cameraButton.setOnClickListener(new View.OnClickListener() {
-//			// The cameraButton can be used to re-open the camera if the 
-//			// user is not satisfied with the current preview. I guess 
-//			// this is not the best solution, but I think it will work. 
-//			
-//			@Override
-//			public void onClick(View v) {
-//				InputMethodManager imm = (InputMethodManager) getActivity()
-//						.getSystemService(Context.INPUT_METHOD_SERVICE);
-//				imm.hideSoftInputFromWindow(cameraButton.getWindowToken(), 0);
-//				// Open the camera using an Intent
-//				((NewPhotoActivity) getActivity()).startCamera();
-//			}
-//		});
-
 		saveButton = ((Button) v.findViewById(R.id.save_button));
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
