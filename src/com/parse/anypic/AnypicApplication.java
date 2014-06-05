@@ -31,7 +31,7 @@ public class AnypicApplication extends Application {
 		/*
 		 * Fill in this section with your Parse credentials
 		 */
-		Parse.initialize(this, "cLXA3EhzyvWXitzfo8VNlqFEetDG9vKQgt87P85F", "O5EtsbdS59icxwKXqYm3WfLyYKUjHVX4pj5UOazj");
+		Parse.initialize(this, "YOUR_APPLICATION_KEY", "YOUR_CLIENT_KEY");
 		
 		// Set your Facebook App Id in strings.xml
 		ParseFacebookUtils.initialize(getString(R.string.app_id));

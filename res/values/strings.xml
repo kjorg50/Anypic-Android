@@ -19,7 +19,7 @@
     <string name="login_intro">Login to Anypic using your Facebook account</string>
     <string name="login">Log in</string>
     <string name="logout">Log out</string>
-    <string name="app_id">1415285015407362</string>
+    <string name="app_id">YOUR_FACEBOOK_ID</string>
     <string name="no_data">No data</string>
 
 </resources>
