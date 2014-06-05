@@ -14,12 +14,10 @@ Make sure you have the Android SDK installed on your system. The version of the 
 	1. (For Android Studio set up, you're on your own) 
 2. Create your Anypic App on [Parse](https://parse.com/apps).
 3. Add your Parse application ID and client key in `AnypicApplication.java`
-
 ```java
 
 Parse.initialize(this, "<APP_ID>", "<CLIENT_KEY>");
 ```
-
 **4. Set up the Facebook SDK**
 
 * follow the [Facebook User guide](https://www.parse.com/docs/android_guide#fbusers) in Parse's Android documentation. 
