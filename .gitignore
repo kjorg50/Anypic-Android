@@ -11,6 +11,12 @@ gen/
 out/
 proguard/
 
+### Emacs ###
+*~
+.*~
+.\#*
+\#*
+
 ### Gradle ###
 .gradle/
 build/
