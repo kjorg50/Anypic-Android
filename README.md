@@ -30,6 +30,5 @@ Parse.initialize(this, "<APP_ID>", "<CLIENT_KEY>");
 ```java
 ParseFacebookUtils.initialize("YOUR FACEBOOK APP ID");
 ```
-* **Make sure that the `facebooksdk.jar` file is [added as an Android Dependency](http://stackoverflow.com/questions/20355971/how-do-i-add-a-new-library-to-android-dependencies-using-eclipse-adt) to your project**.
 
 5) Build the project and run
