@@ -1,3 +1,8 @@
+### Android Studio ###
+.externalNativeBuild
+.navigation/
+captures/
+
 ### ART/Dalvik VM ###
 *.dex
 
@@ -20,6 +25,10 @@ proguard/
 ### Gradle ###
 .gradle/
 build/
+
+### Intellij ###
+*.idea/
+*.iml
 
 ### Java class ###
 *.class
