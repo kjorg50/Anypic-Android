@@ -6,13 +6,12 @@ Here is the [iOS tutorial](https://parse.com/tutorials/anypic) from which this v
  
 ## Initial Setup
 
-Make sure you have the Android SDK installed on your system. The version of the Eclipse IDE with ADT (Android Developer Tools) built-in can be found [here](http://developer.android.com/sdk/index.html)
+Make sure you have the Android SDK installed on your system. The version of the Android Studio with ADT
+(Android Developer Tools) built-in can be found [here](http://developer.android.com/sdk/index.html)
 
 ## How to Run
 
-1) Clone the repository and open the project in Eclipse 
-
-* (For Android Studio set up, you're on your own) 
+1) Clone the repository and open the project in Android Studio
 
 2) Create your Anypic App on [Parse](https://parse.com/apps).
 
@@ -30,6 +29,5 @@ Parse.initialize(this, "<APP_ID>", "<CLIENT_KEY>");
 ```java
 ParseFacebookUtils.initialize("YOUR FACEBOOK APP ID");
 ```
-* **Make sure that the `facebooksdk.jar` file is [added as an Android Dependency](http://stackoverflow.com/questions/20355971/how-do-i-add-a-new-library-to-android-dependencies-using-eclipse-adt) to your project**.
 
 5) Build the project and run
