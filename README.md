@@ -6,13 +6,12 @@ Here is the [iOS tutorial](https://parse.com/tutorials/anypic) from which this v
  
 ## Initial Setup
 
-Make sure you have the Android SDK installed on your system. The version of the Eclipse IDE with ADT (Android Developer Tools) built-in can be found [here](http://developer.android.com/sdk/index.html)
+Make sure you have the Android SDK installed on your system. The version of the Android Studio with ADT
+(Android Developer Tools) built-in can be found [here](http://developer.android.com/sdk/index.html)
 
 ## How to Run
 
-1) Clone the repository and open the project in Eclipse 
-
-* (For Android Studio set up, you're on your own) 
+1) Clone the repository and open the project in Android Studio
 
 2) Create your Anypic App on [Parse](https://parse.com/apps).
 
